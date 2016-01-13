@@ -57,7 +57,7 @@ namespace DieGame
 
         public override string ToString()
         {
-            return "My die value is " + FaceValue;
+            return FaceValue.ToString();
         }
         #endregion
     }
