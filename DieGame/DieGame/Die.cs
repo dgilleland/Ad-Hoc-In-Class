@@ -34,10 +34,8 @@ namespace DieGame
 
         #region Constructors and Methods - How a Die object "behaves"
         // A parameterless constructor
-        public Die()
+        public Die() : this(6)
         {
-            Sides = 6;
-            Roll();
         }
 
         // An overload of the constructor, one that takes in the number of sides for the die.
