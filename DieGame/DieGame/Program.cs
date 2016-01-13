@@ -15,7 +15,9 @@ namespace DieGame
             dieSize = int.Parse(Console.ReadLine()); // no validation for now.....
 
             // Instantiate our Die objects
-            Die firstPlayer = new Die(dieSize);
+            Die firstPlayer = new TrickDie(dieSize);
+            Console.WriteLine(firstPlayer); // TEMP
+            Console.WriteLine(firstPlayer.ToString()); // TEMP
             Die secondPlayer;
             if (dieSize == 6)
                 secondPlayer = new Die();

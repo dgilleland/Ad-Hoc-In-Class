@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace DieGame
 {
+    // If I don't declare a base class for my class, then my class will automatically inherit from the Object class
+    // The Object class provides virtual methods such as the .ToString() method
     public class Die
     {
         #region Properties and Fields - What a Die object "looks like"
@@ -14,7 +16,7 @@ namespace DieGame
         private static Random _rnd = new Random();
 
         // This is an auto-implemented property
-        public int FaceValue { get; private set; }
+        public int FaceValue { get; protected set; }
 
         // A private field with a public explicitly implemented property
         private int _sides;
@@ -45,10 +47,17 @@ namespace DieGame
             Roll();
         }
 
-        public void Roll()
+        // The virtual keyword means that any class that inherits from the Die class
+        // can override (change) the behaviour of this method.
+        public virtual void Roll()
         {
             // .Next(inclusive lowest range value, exclusive highest range value)
             FaceValue = _rnd.Next(1, Sides + 1);
+        }
+
+        public override string ToString()
+        {
+            return "My die value is " + FaceValue;
         }
         #endregion
     }
