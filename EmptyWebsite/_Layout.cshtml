@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>@Page.Title</title>
+        @RenderSection("head", required: false)
+    </head>
+<body>
+    @RenderBody()
+
+    @{
+        // this is a whole block of C# code that I can write.
+        if (this.IsPost)
+        {
+            <p>This page request was done as a POST request from the browser.</p>
+        }
+        else
+        {
+            <p>This page request was a GET request.</p>
+        }
+    }
+</body>
+
+
+
+</html>
