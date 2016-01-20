@@ -1,6 +1,65 @@
 ﻿@{
     Page.Title = "Title goes here";
     Layout = "~/_Layout.cshtml";
+
+    string vistorName = Request["YourName"];
+    string programmingLanguages = Request["Languages"];
+    string[] skills;
+    if(!string.IsNullOrEmpty(programmingLanguages))
+    {
+        skills = programmingLanguages.Split(',');
+    }
+    else
+    {
+        skills = new string[0]; // empty array of strings
+    }
+
 }
 
 <h1>Sandbox Page</h1>
+    <p>Known Languages: @programmingLanguages.</p>
+    <ul>
+        @foreach (string item in skills) {
+        <li>@item</li>
+        }
+    </ul>
+@if (!string.IsNullOrWhiteSpace(vistorName))
+{
+    <p>Hello @vistorName!</p>
+}
+
+<form>
+    <label>Name: </label>
+    <input type="text" name="YourName" value="@vistorName" />
+
+    <hr />
+
+    <label>Gender: </label>
+    <input type="radio" value="M" name="Gender" />
+    <label>Male</label>
+    <input type="radio" value="F" name="Gender" />
+    <label>Female</label>
+
+    <hr />
+    <label>Known Languages: </label>
+    <input type="checkbox" value="CSharp" name="Languages" />
+    <label>C#</label>
+    <input type="checkbox" value="PHP" name="Languages" />
+    <label>PHP</label>
+    <input type="checkbox" value="HTML" name="Languages" />
+    <label>HTML</label>
+    <input type="checkbox" value="CSS" name="Languages" />
+    <label>CSS</label>
+    <input type="checkbox" value="JavaScript" name="Languages" />
+    <label>JavaScript</label>
+
+    <hr />
+    <input type="submit" value="Submit" />
+</form>
+
+@section notes {
+    <ul>
+        <li>In HTML, the &lt;form&gt; tags cannot be nested one inside another, but they can be stacked.</li>
+        <li>Learn keyboard shortcuts, like <kbd>CTRL</kbd> + <kbd>k</kbd>, <kbd>CTRL</kbd> + <kbd>c</kbd> to comment out selected text in Visual Studio.</li>
+    </ul>
+}
