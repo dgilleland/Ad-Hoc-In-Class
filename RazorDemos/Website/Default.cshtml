@@ -1,0 +1,19 @@
+﻿@{
+    Page.Title = "Title goes here";
+    Layout = "~/_Layout.cshtml";
+    string requestType;
+    if (this.IsPost)
+    {
+        requestType = "POST";
+    }
+    else
+    {
+        requestType = "GET";
+    }
+}
+
+@section notes {
+    <p>This page was requested with an HTTP @requestType.</p>
+}
+
+<h1>Home Page</h1>
