@@ -3,6 +3,7 @@
     Layout = "~/_Layout.cshtml";
 
     string vistorName = Request["YourName"];
+    string indicatedGender = Request["Gender"];
     string programmingLanguages = Request["Languages"];
     string[] skills;
     if(!string.IsNullOrEmpty(programmingLanguages))
@@ -11,6 +12,7 @@
     }
     else
     {
+        programmingLanguages = ""; // rather than just a NULL value
         skills = new string[0]; // empty array of strings
     }
 
@@ -35,23 +37,38 @@
     <hr />
 
     <label>Gender: </label>
-    <input type="radio" value="M" name="Gender" />
+    <input type="radio" value="M" name="Gender" checked='@("M".Equals(indicatedGender))' />
     <label>Male</label>
-    <input type="radio" value="F" name="Gender" />
+    <input type="radio" value="F" name="Gender" checked='@("F".Equals(indicatedGender))' />
     <label>Female</label>
 
     <hr />
     <label>Known Languages: </label>
-    <input type="checkbox" value="CSharp" name="Languages" />
+    <input type="checkbox" value="CSharp" name="Languages" checked='@(programmingLanguages.Contains("CSharp"))' />
     <label>C#</label>
-    <input type="checkbox" value="PHP" name="Languages" />
+    <input type="checkbox" value="PHP" name="Languages" checked='@(programmingLanguages.Contains("PHP"))' />
     <label>PHP</label>
-    <input type="checkbox" value="HTML" name="Languages" />
+    <input type="checkbox" value="HTML" name="Languages" checked='@(programmingLanguages.Contains("HTML"))' />
     <label>HTML</label>
-    <input type="checkbox" value="CSS" name="Languages" />
+    <input type="checkbox" value="CSS" name="Languages" checked='@(programmingLanguages.Contains("CSS"))' />
     <label>CSS</label>
-    <input type="checkbox" value="JavaScript" name="Languages" />
+    <input type="checkbox" value="JavaScript" name="Languages" checked='@(programmingLanguages.Contains("JavaScript"))' />
     <label>JavaScript</label>
+
+    @{
+        string[] provinces = {"AB", "BC", "SK", "MB", "Others"};
+        string myProv = Request["MyProvince"];
+    }
+
+    <label>Select your province:</label>
+    <select name="MyProvince">
+        @foreach (var prov in provinces)
+        {
+            <option value="@prov" selected="@(prov.Equals(myProv))">@prov</option>
+        }
+    </select>
+
+
 
     <hr />
     <input type="submit" value="Submit" />

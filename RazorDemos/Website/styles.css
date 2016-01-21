@@ -1,4 +1,14 @@
-﻿nav ul {
+﻿input[type="text"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="datetime"],
+input[type="time"] { 
+    display: block;
+}
+
+
+nav ul {
     list-style-type: none;
     margin: 0;
     padding: 0;

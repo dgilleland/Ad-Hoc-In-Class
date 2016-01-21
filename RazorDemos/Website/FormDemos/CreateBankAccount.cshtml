@@ -1,0 +1,65 @@
+﻿@{
+    Page.Title = "Create Bank Account";
+    Layout = "~/_Layout.cshtml";
+}
+
+<div>
+    <h1>@Page.Title</h1>
+
+    <p>This illustrates some basic controls for creating a bank account.</p>
+    @{
+        if (IsPost)
+        {
+            BankAccount account = new BankAccount();
+            account.AccountHolder = Request["accountHolder"];
+            account.AccountNumber = Request["accountNumber"];
+            decimal temp;
+            if (decimal.TryParse(Request["openingBalance"], out temp))
+            {
+                account.OpeningBalance = temp;
+            }
+            if (decimal.TryParse(Request["overdraftLimit"], out temp))
+            {
+                account.OverdraftLimit = temp;
+            }
+            AccountType tempType;
+            if (Enum.TryParse<AccountType>(Request["accountType"], false, out tempType))
+            {
+                account.AccountType = tempType;
+            }
+
+            <p>
+                An @account.AccountType account has been created for @account.AccountHolder with an opening balance of $ @account.OpeningBalance.
+            </p>
+
+        }
+    }
+
+    <form method="post">
+        <p>fill in the following form and click submit.</p>
+        <fieldset>
+            <legend>Account Details</legend>
+            <label for="accountHolder">Account Holder</label>
+            <input type="text" name="accountHolder" />
+
+            <label for="accountNumber">Account Number</label>
+            <input type="text" name="accountNumber" />
+
+            <label for="openingBalance">Opening Balance</label>
+            <input type="number" name="openingBalance" />
+
+            <label for="overdraftLimit">Overdraft Limit</label>
+            <input type="number" name="overdraftLimit" />
+
+            <label for="accountType">Account Type</label>
+            <select name="accountType">
+                <option value="Chequing">Chequing</option>
+                <option value="Savings">Savings</option>
+                <option value="Credit">Credit</option>
+            </select>
+
+            <br />
+            <input type="submit" value="Submit" />
+        </fieldset>
+    </form>
+</div>
