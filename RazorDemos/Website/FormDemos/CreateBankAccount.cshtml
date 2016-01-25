@@ -1,14 +1,36 @@
 ﻿@{
     Page.Title = "Create Bank Account";
     Layout = "~/_Layout.cshtml";
+
+    // Get a reference to my database object
+    var db = WebMatrix.Data.Database.Open("Mixed"); // opens a connection to the database
 }
 
 <div>
     <h1>@Page.Title</h1>
 
     <p>This illustrates some basic controls for creating a bank account.</p>
+    <blockquote>
+        @{
+            // Get all the bank accounts to display them
+            var query = "SELECT AccountNumber, AccountHolder, OpeningBalance, OverdraftLimit, AccountType FROM BankAccounts";
+            try
+            {
+                var data = db.Query(query);
+                // display all the data
+                foreach (var row in data)
+                {
+                    <div>@row.AccountHolder has a @row.AccountType account.</div>
+                }
+            }
+            catch (Exception ex)
+            {
+                <p>ERROR - @ex.Message</p>
+            }
+        }
+    </blockquote>
     @{
-        if (IsPost)
+    if (IsPost)
         {
             BankAccount account = new BankAccount();
             account.AccountHolder = Request["accountHolder"];
@@ -28,9 +50,19 @@
                 account.AccountType = tempType;
             }
 
-            <p>
-                An @account.AccountType account has been created for @account.AccountHolder with an opening balance of $ @account.OpeningBalance.
-            </p>
+            string sql = "INSERT INTO BankAccounts(AccountNumber, AccountHolder, OpeningBalance, OverdraftLimit, AccountType) VALUES (@0, @1, @2, @3, @4)";
+            try
+            {
+                db.Execute(sql, account.AccountNumber, account.AccountHolder, account.OpeningBalance, account.OverdraftLimit, account.AccountType.ToString());
+                // Success!
+                <p>
+                    An @account.AccountType account has been created for @account.AccountHolder with an opening balance of $ @account.OpeningBalance.
+                </p>
+            }
+            catch (Exception ex)
+            {
+                <p style="color:darkred; font-size:1.25em; font-weight:bold;">ERROR! @ex.Message</p>
+            }
 
         }
     }
