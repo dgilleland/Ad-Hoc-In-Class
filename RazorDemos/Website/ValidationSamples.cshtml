@@ -1,0 +1,102 @@
+﻿@{
+    Page.Title = "Validation Samples";
+    Layout = "~/_Layout.cshtml";
+}
+<style type="text/css">
+       /* style all elements with a required attribute */
+       input:required {
+           background: rgba(255, 0, 0, 0.27);
+       }
+       /* style all input elements with a required attribute */
+       input:required {
+           box-shadow: 4px 4px 20px rgba(200, 0, 0, 0.15);
+       }
+
+           /**
+            * style input elements that have a required
+            * attribute and a focus state
+            */
+           input:required:focus {
+               border: 1px solid red;
+               outline: none;
+           }
+
+           /**
+            * style input elements that have a required
+            * attribute and a hover state
+            */
+           input:required:hover {
+               opacity: 1;
+           }
+           /*input:invalid {
+  background: hsla(0, 90%, 70%, 1);
+}
+
+input:valid {
+  background: hsla(100, 90%, 70%, 1);
+}*/
+</style>
+<div>
+    <h1>@Page.Title</h1>
+
+    <form>
+        <details open>
+            <summary>Simple Text Input</summary>
+            <fieldset>
+                <p>Use this form to request a new web account. Identify any additional resources, such as FTP access, databases, https, etc.</p>
+                <label>User Name</label>
+                <input type="text" name="userName" required minlength="5" maxlength="10" />
+                <label>Password</label>
+                <input type="password" name="password" required placeholder="Choose a password"
+                       pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+                       title="Password must contain: UpperCase, LowerCase, Number/SpecialChar and min 8 Chars" />
+                <label>Enter your complaint in the following box.</label>
+                <textarea rows="5" cols="10" maxlength="50" title="Max of 40 characters"></textarea>
+                <br />
+                <input type="submit" value="Submit Form" />
+            </fieldset>
+        </details>
+    </form>
+
+    <form>
+        <details>
+            <summary>Interesting Form Input</summary>
+            <p>Give me some contact information. Also, tell me how many times a day you want me to contact you.</p>
+            <label>Contact Email</label>
+            <input type="email" name="contactEmail" />
+            <label>Your Website</label>
+            <input type="url" name="website" />
+            <label>Your Phone Number</label>
+            <input type="tel" name="phoneNumber" />
+            <label>Max Telemarketer Calls Per Day</label>
+            <input type="number" name="quantity" />
+        </details>
+    </form>
+    <form>
+        <details>
+            <summary>Date and Time</summary>
+            <p>Enter in some date and time information.</p>
+            <label>DateTime</label>
+            <input type="datetime" name="dateWithTime" />
+            <label>DateTime-Local</label>
+            <input type="datetime-local" name="localDateWithTime" />
+            <label>Date</label>
+            <input type="date" value="dateOnly" />
+            <label>Month</label>
+            <input type="month" value="monthOnly" />
+            <label>Time</label>
+            <input type="time" value="timeOnly" />
+        </details>
+    </form>
+    @*<form>
+            <details>
+                <summary></summary>
+                <p></p>
+                <label></label>
+                <input type="" value="" />
+                <input type="" value="" />
+                <input type="" value="" />
+                <input type="" value="" />
+            </details>
+        </form>*@
+</div>
