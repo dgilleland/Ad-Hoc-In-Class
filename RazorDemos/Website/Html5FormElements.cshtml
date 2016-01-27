@@ -1,0 +1,65 @@
+﻿@{
+    Page.Title = "HTML 5 Form Elements";
+    Layout = "~/_Layout.cshtml";
+}
+
+<div>
+    <h1>@Page.Title</h1>
+
+    <form>
+        <details>
+            <summary>Simple Text Input</summary>
+            <p>Use this form to request a new web account. Identify any additional resources, such as FTP access, databases, https, etc.</p>
+            <label>User Name</label>
+            <input type="text" name="userName" />
+            <label>Password</label>
+            <input type="password" name="password" />
+            <label>Additional Account Requirements</label>
+            <textarea rows="5" cols="80"></textarea>
+            <br />
+            <input type="submit" value="Register" />
+        </details>
+    </form>
+
+    <form>
+        <details>
+            <summary>Interesting Form Input</summary>
+            <p>Give me some contact information. Also, tell me how many times a day you want me to contact you.</p>
+            <label>Contact Email</label>
+            <input type="email" name="contactEmail" />
+            <label>Your Website</label>
+            <input type="url" name="website" />
+            <label>Your Phone Number</label>
+            <input type="tel" name="phoneNumber" />
+            <label>Max Telemarketer Calls Per Day</label>
+            <input type="number" name="quantity" />
+        </details>
+    </form>
+    <form>
+        <details>
+            <summary>Date and Time</summary>
+            <p>Enter in some date and time information.</p>
+            <label>DateTime</label>
+            <input type="datetime" name="dateWithTime" />
+            <label>DateTime-Local</label>
+            <input type="datetime-local" name="localDateWithTime" />
+            <label>Date</label>
+            <input type="date" value="dateOnly" />
+            <label>Month</label>
+            <input type="month" value="monthOnly" />
+            <label>Time</label>
+            <input type="time" value="timeOnly" />
+        </details>
+    </form>
+    <form>
+        <details>
+            <summary></summary>
+            <p></p>
+            <label></label>
+            <input type="" value="" />
+            <input type="" value="" />
+            <input type="" value="" />
+            <input type="" value="" />
+        </details>
+    </form>
+</div>
