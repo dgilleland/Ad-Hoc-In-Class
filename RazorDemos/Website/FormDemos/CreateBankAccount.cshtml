@@ -125,7 +125,11 @@
 @helper DisplayAccounts(BankAccountController controller)
 {
     var data = controller.ListAllBankAccounts();
-    // display all the data
+    WebGrid myGrid = new WebGrid(data);
+    <div>
+        @myGrid.GetHtml()
+    </div>
+    @*// display all the data
     foreach (var row in data)
     {
         <div>
@@ -135,7 +139,7 @@
                 @row.AccountHolder has a @row.AccountType account.
             </form>
         </div>
-    }
+    }*@
     <form method="post">
         <input type="submit" value="Purge Accounts" name="accountAction" />
     </form>
