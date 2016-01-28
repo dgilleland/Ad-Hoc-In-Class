@@ -50,8 +50,8 @@ input:valid {
                 <input type="password" name="password" required placeholder="Choose a password"
                        pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
                        title="Password must contain: UpperCase, LowerCase, Number/SpecialChar and min 8 Chars" />
-                <label>Enter your complaint in the following box.</label>
-                <textarea rows="5" cols="10" maxlength="50" title="Max of 40 characters"></textarea>
+                <label>Additional Account Requirements:</label>
+                <textarea rows="5" cols="20" maxlength="100" title="Max of 100 characters"></textarea>
                 <br />
                 <input type="submit" value="Submit Form" />
             </fieldset>
@@ -62,15 +62,17 @@ input:valid {
         <details>
             <summary>Interesting Form Input</summary>
             <p>Give me some contact information. Also, tell me how many times a day you want me to contact you.</p>
-            <label>Contact Email</label>
-            <input type="email" name="contactEmail" />
-            <label>Your Website</label>
-            <input type="url" name="website" />
-            <label>Your Phone Number</label>
-            <input type="tel" name="phoneNumber" />
-            <label>Max Telemarketer Calls Per Day</label>
-            <input type="number" name="quantity" />
-        </details>
+            <fieldset>
+                <label>Contact Email</label>
+                <input type="email" name="contactEmail" />
+                <label>Your Website</label>
+                <input type="url" name="website" />
+                <label>Your Phone Number</label>
+                <input type="tel" name="phoneNumber" />
+                <label>Max Telemarketer Calls Per Day</label>
+                <br />
+                <input type="number" name="quantity" />
+            </fieldset>        </details>
     </form>
     <form>
         <details>
