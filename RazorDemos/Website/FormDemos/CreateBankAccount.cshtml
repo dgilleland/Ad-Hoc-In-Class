@@ -15,9 +15,9 @@
     <blockquote>
         <h4>Existing Accounts</h4>
         @{
-            try
+            if (IsPost)
             {
-                if (IsPost)
+                try
                 {
                     // Handle the various button clicks
                     BankAccount account;
@@ -26,28 +26,28 @@
                         case "Submit":
                             account = GetBankAccountFromForm();
                             controller.AddBankAccount(account);
-                            SuccessMessage("New account added");
+                            @SuccessMessage("New account added");
                             break;
                         case "Edit":
                             var editNumber = Request["editAccountNumber"];
                             editAccount = controller.GetBankAccount(editNumber);
-                            SuccessMessage("Editing account #" + editAccount.AccountNumber);
+                            @SuccessMessage("Editing account #" + editAccount.AccountNumber);
                             break;
                         case "Update":
                             account = GetBankAccountFromForm();
                             controller.UpdateBankAccount(account);
-                            SuccessMessage("Account #" + account.AccountNumber + " was updated.");
+                            @SuccessMessage("Account #" + account.AccountNumber + " was updated.");
                             break;
                         case "Purge Accounts":
                             controller.PurgeBankAccounts();
-                            SuccessMessage("All accounts deleted.");
+                            @SuccessMessage("All accounts deleted.");
                             break;
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                <p style="color:darkred; font-size:1.25em; font-weight:bold;">ERROR! @ex.Message</p>
+                catch (Exception ex)
+                {
+                    <p style="color:darkred; font-size:1.25em; font-weight:bold;">ERROR! @ex.Message</p>
+                }
             }
         }
         @DisplayAccounts(controller)
