@@ -20,12 +20,19 @@ public class BankAccountController
         }
     }
 
-    public dynamic GetBankAccount(string accountNumber)
+    public BankAccount GetBankAccount(string accountNumber)
     {
         using (var db = WebMatrix.Data.Database.Open(DatabaseName))
         {
             string sql = "SELECT AccountNumber, AccountHolder, OpeningBalance, OverdraftLimit, AccountType FROM BankAccounts WHERE AccountNumber = @0";
-            return db.QuerySingle(sql, accountNumber);
+            var result = db.QuerySingle(sql, accountNumber);
+            BankAccount account = new BankAccount();
+            account.AccountHolder = result.AccountHolder;
+            account.AccountNumber = result.AccountNumber;
+            account.OpeningBalance = result.OpeningBalance;
+            account.OverdraftLimit = result.OverdraftLimit;
+            account.AccountType = Enum.Parse(typeof(AccountType), result.AccountType, true);
+            return account;
         }
     }
 
