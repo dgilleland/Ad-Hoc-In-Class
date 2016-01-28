@@ -2,165 +2,65 @@
     Page.Title = "Create Bank Account";
     Layout = "~/_Layout.cshtml";
 
-    // Get a reference to my database object
-    var db = WebMatrix.Data.Database.Open("Mixed"); // opens a connection to the database
+    // A few page-global variables
     var accountAction = Request["accountAction"];
-    
-    if(IsPost)
-    {
-        if("Purge Accounts".Equals(accountAction))
-        {
-            var deleteAll = "DELETE FROM BankAccounts";
-            try
-            {
-                var rowsAffected = db.Execute(deleteAll);
-                <div>@rowsAffected rows were deleted.</div>
-            }
-            catch (Exception ex)
-            {
-                <div>Error: @ex.Message.</div>
-            }
-        }
-        if ("Update".Equals(accountAction))
-        {
-            BankAccount account = new BankAccount();
-            account.AccountHolder = Request["accountHolder"];
-            account.AccountNumber = Request["accountNumber"];
-            decimal temp;
-            if (decimal.TryParse(Request["openingBalance"], out temp))
-            {
-                account.OpeningBalance = temp;
-            }
-            if (decimal.TryParse(Request["overdraftLimit"], out temp))
-            {
-                account.OverdraftLimit = temp;
-            }
-            AccountType tempType;
-            if (Enum.TryParse<AccountType>(Request["accountType"], false, out tempType))
-            {
-                account.AccountType = tempType;
-            }
-
-            string sql = "UPDATE BankAccounts SET AccountHolder = @1, OpeningBalance = @2, OverdraftLimit = @3, AccountType = @4 WHERE AccountNumber = @0";
-            try
-            {
-                db.Execute(sql, account.AccountNumber, account.AccountHolder, account.OpeningBalance, account.OverdraftLimit, account.AccountType.ToString());
-                // Success!
-                <p>The account has been changed for @account.AccountHolder.</p>
-            }
-            catch (Exception ex)
-            {
-                <p style="color:darkred; font-size:1.25em; font-weight:bold;">ERROR! @ex.Message</p>
-            }
-        }
-    }
+    var editAccount = new BankAccount();
+    var controller = new BankAccountController("Mixed");
 }
 
 <div>
     <h1>@Page.Title</h1>
 
     <p>This illustrates some basic controls for creating a bank account.</p>
-    <div>
-        @{
-            if (IsPost && "Submit".Equals(accountAction)) // only do this for a new account
-            {
-                BankAccount account = new BankAccount();
-                account.AccountHolder = Request["accountHolder"];
-                account.AccountNumber = Request["accountNumber"];
-                decimal temp;
-                if (decimal.TryParse(Request["openingBalance"], out temp))
-                {
-                    account.OpeningBalance = temp;
-                }
-                if (decimal.TryParse(Request["overdraftLimit"], out temp))
-                {
-                    account.OverdraftLimit = temp;
-                }
-                AccountType tempType;
-                if (Enum.TryParse<AccountType>(Request["accountType"], false, out tempType))
-                {
-                    account.AccountType = tempType;
-                }
-
-                string sql = "INSERT INTO BankAccounts(AccountNumber, AccountHolder, OpeningBalance, OverdraftLimit, AccountType) VALUES (@0, @1, @2, @3, @4)";
-                try
-                {
-                    db.Execute(sql, account.AccountNumber, account.AccountHolder, account.OpeningBalance, account.OverdraftLimit, account.AccountType.ToString());
-                    // Success!
-                    <p>
-                        An @account.AccountType account has been created for @account.AccountHolder with an opening balance of $ @account.OpeningBalance.
-                    </p>
-                }
-                catch (Exception ex)
-                {
-                    <p style="color:darkred; font-size:1.25em; font-weight:bold;">ERROR! @ex.Message</p>
-                }
-
-            }
-        }
-    </div>
     <blockquote>
         <h4>Existing Accounts</h4>
         @{
-            // Get all the bank accounts to display them
-            var query = "SELECT AccountNumber, AccountHolder, OpeningBalance, OverdraftLimit, AccountType FROM BankAccounts";
             try
             {
-                var data = db.Query(query);
-                // display all the data
-                foreach (var row in data)
+                if (IsPost)
                 {
-                    <div>
-                        <form method="post">
-                            <input type="submit" value="Edit" name="accountAction" />
-                            <input type="hidden" value="@row.AccountNumber" name="editAccountNumber" />
-                            @row.AccountHolder has a @row.AccountType account.
-                        </form>
-                    </div>
+                    // Handle the various button clicks
+                    BankAccount account;
+                    switch (accountAction)
+                    {
+                        case "Submit":
+                            account = GetBankAccountFromForm();
+                            controller.AddBankAccount(account);
+                            SuccessMessage("New account added");
+                            break;
+                        case "Edit":
+                            var editNumber = Request["editAccountNumber"];
+                            editAccount = controller.GetBankAccount(editNumber);
+                            SuccessMessage("Editing account #" + editAccount.AccountNumber);
+                            break;
+                        case "Update":
+                            account = GetBankAccountFromForm();
+                            controller.UpdateBankAccount(account);
+                            SuccessMessage("Account #" + account.AccountNumber + " was updated.");
+                            break;
+                        case "Purge Accounts":
+                            controller.PurgeBankAccounts();
+                            SuccessMessage("All accounts deleted.");
+                            break;
+                    }
                 }
-                <form method="post">
-                    <input type="submit" value="Purge Accounts" name="accountAction" />
-                </form>
             }
             catch (Exception ex)
             {
-                <p>ERROR - @ex.Message</p>
+                <p style="color:darkred; font-size:1.25em; font-weight:bold;">ERROR! @ex.Message</p>
             }
         }
+        @DisplayAccounts(controller)
     </blockquote>
-
     <form method="post">
         <p>Fill in the following form and click submit.</p>
-        @{
-            var editAccount = new BankAccount();
-            if (IsPost && "Edit".Equals(accountAction))
-            {
-                // Get the account information
-                var editNumber = Request["editAccountNumber"];
-                var selectAccount = "SELECT AccountNumber, AccountHolder, OpeningBalance, OverdraftLimit, AccountType FROM BankAccounts WHERE AccountNumber = @0";
-                try
-                {
-                    var row = db.QuerySingle(selectAccount, editNumber);
-                    editAccount.AccountNumber = row.AccountNumber;
-                    editAccount.AccountHolder = row.AccountHolder;
-                    editAccount.OpeningBalance = row.OpeningBalance;
-                    editAccount.OverdraftLimit = row.OverdraftLimit;
-                    editAccount.AccountType = Enum.Parse(typeof(AccountType), row.AccountType, false);
-                    <text>Editing an existing account: @editAccount.AccountNumber</text>
-                }
-                catch (Exception ex)
-                {
-                    <text>Error getting account info for editing: @ex.Message</text>
-                }
-            }
-        }
         <fieldset>
             <legend>Account Details</legend>
             <label for="accountHolder">Account Holder</label>
             <input type="text" name="accountHolder" value="@editAccount.AccountHolder" />
 
             <label for="accountNumber">Account Number</label>
-            <input type="text" name="accountNumber" value="@editAccount.AccountNumber" />
+            <input type="text" name="accountNumber" value="@editAccount.AccountNumber" disabled="@(!string.IsNullOrEmpty(editAccount.AccountNumber))" />
 
             <label for="openingBalance">Opening Balance</label>
             <input type="number" name="openingBalance" value="@editAccount.OpeningBalance" />
@@ -176,37 +76,67 @@
             </select>
 
             <br />
-            @if ("Edit".Equals(accountAction))
-            {
-                <input type="submit" value="Update" name="accountAction" />
-            }
-            else
-            {
-                <input type="submit" value="Submit" name="accountAction" />
-            }
+            @ToggleInsertUpdate(accountAction)
         </fieldset>
     </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </div>
+
+@functions {
+    BankAccount GetBankAccountFromForm()
+    {
+        BankAccount account = new BankAccount();
+        account.AccountHolder = Request["accountHolder"];
+        account.AccountNumber = Request["accountNumber"];
+        decimal temp;
+        if (decimal.TryParse(Request["openingBalance"], out temp))
+        {
+            account.OpeningBalance = temp;
+        }
+        if (decimal.TryParse(Request["overdraftLimit"], out temp))
+        {
+            account.OverdraftLimit = temp;
+        }
+        AccountType tempType;
+        if (Enum.TryParse<AccountType>(Request["accountType"], false, out tempType))
+        {
+            account.AccountType = tempType;
+        }
+        return account;
+    }
+}
+
+@helper SuccessMessage(string message)
+{
+    <p style="color:#006400; font-size:1.05em; font-weight:bold;">@message</p>
+}
+
+@helper ToggleInsertUpdate(string buttonValue)
+{
+    if ("Edit".Equals(buttonValue))
+    {
+        <input type="submit" value="Update" name="accountAction" />
+    }
+    else
+    {
+        <input type="submit" value="Submit" name="accountAction" />
+    }
+}
+
+@helper DisplayAccounts(BankAccountController controller)
+{
+    var data = controller.ListAllBankAccounts();
+    // display all the data
+    foreach (var row in data)
+    {
+        <div>
+            <form method="post">
+                <input type="submit" value="Edit" name="accountAction" />
+                <input type="hidden" value="@row.AccountNumber" name="editAccountNumber" />
+                @row.AccountHolder has a @row.AccountType account.
+            </form>
+        </div>
+    }
+    <form method="post">
+        <input type="submit" value="Purge Accounts" name="accountAction" />
+    </form>
+}
