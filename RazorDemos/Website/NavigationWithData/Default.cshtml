@@ -27,6 +27,20 @@
 
 <form method="post">
     <fieldset>
+        <legend>Submit with FormAction attribute</legend>
+        <label>Enter a security question:</label>
+        <input type="text" name="securityQuestion" list="defaultQuestions" class="wide" />
+        <label>Enter your standard answer to this question:</label>
+        <input type="text" name="securityAnswer" class="wide" />
+        <br />
+        <input type="submit" value="Post directly to the destination page" formaction="~/NavigationWithData/Destination.cshtml" />
+    </fieldset>
+</form>
+
+<br /><br /><br /><br />
+
+<form method="post">
+    <fieldset>
         <legend>Build a Query string link</legend>
         <label>Enter a security question:</label>
         <input type="text" name="securityQuestion_2" list="defaultQuestions" class="wide" />
