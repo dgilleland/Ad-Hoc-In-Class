@@ -6,8 +6,25 @@
     var accountAction = Request["accountAction"];
     var editAccount = new BankAccount();
     var controller = new BankAccountController("Mixed");
-}
 
+    // Set up server-side validation
+    Validation.RequireField("accountHolder");
+    Validation.RequireField("accountNumber", "The account number must be entered!!");
+    Validation.RequireFields("openingBalance", "overdraftLimit", "accountType");
+
+    Validation.Add("accountNumber",
+                   Validator.StringLength(10, 7, "Accounts must be from 7 to 10 characters"));
+    Validation.Add("overdraftLimit",
+                   Validator.Range(0, 500.00, "Negative overdrafts and overdrafts over $500 are not allowed"),
+                   Validator.Decimal("Overdraft values must be a number"));
+}
+<style type="text/css">
+    label[required]:after {
+        content: ' *';
+        color: red;
+        font-weight: bold;
+    }
+</style>
 <div>
     <h1>@Page.Title</h1>
 
@@ -24,24 +41,31 @@
                     switch (accountAction)
                     {
                         case "Submit":
-                            account = GetBankAccountFromForm();
-                            controller.AddBankAccount(account);
-                            @SuccessMessage("New account added");
+                            if (Validation.IsValid())
+                            {
+                                account = GetBankAccountFromForm();
+                                controller.AddBankAccount(account);
+                                @SuccessMessage("New account added")
+                            }
+                            else
+                            {
+                                <div style="color:red;">@Html.ValidationSummary()</div>
+                            }
                             break;
                         case "Edit":
                             var editNumber = Request["editAccountNumber"];
                             editAccount = controller.GetBankAccount(editNumber);
-                            @SuccessMessage("Editing account #" + editAccount.AccountNumber);
+                            @SuccessMessage("Editing account #" + editAccount.AccountNumber)
                             break;
                         case "Update":
                             account = GetBankAccountFromForm();
                             controller.UpdateBankAccount(account);
-                            @SuccessMessage("Account #" + account.AccountNumber + " was updated.");
+                            @SuccessMessage("Account #" + account.AccountNumber + " was updated.")
                             break;
                         case "Purge Accounts":
-                            controller.PurgeBankAccounts();
-                            @SuccessMessage("All accounts deleted.");
-                            break;
+                                                                                                                                                                  controller.PurgeBankAccounts();
+                                                                                                                                                                @SuccessMessage("All accounts deleted.");
+                                                                                                                                        break;
                     }
                 }
                 catch (Exception ex)
@@ -56,20 +80,24 @@
         <p>Fill in the following form and click submit.</p>
         <fieldset>
             <legend>Account Details</legend>
-            <label for="accountHolder">Account Holder</label>
-            <input type="text" name="accountHolder" value="@editAccount.AccountHolder" />
+            <label required for="accountHolder">Account Holder</label>
+            <input type="text" name="accountHolder" required value="@editAccount.AccountHolder" />
 
-            <label for="accountNumber">Account Number</label>
-            <input type="text" name="accountNumber" value="@editAccount.AccountNumber" disabled="@(!string.IsNullOrEmpty(editAccount.AccountNumber))" />
+            <label required for="accountNumber">Account Number</label>
+            <input type="text" name="accountNumber" required minlength="7" maxlength="10"
+                   value="@editAccount.AccountNumber"
+                   disabled="@(!string.IsNullOrEmpty(editAccount.AccountNumber))" />
 
-            <label for="openingBalance">Opening Balance</label>
-            <input type="number" name="openingBalance" value="@editAccount.OpeningBalance" />
+            <label required for="openingBalance">Opening Balance</label>
+            <input type="number" name="openingBalance" required min="10.00"
+                   value="@editAccount.OpeningBalance" />
 
-            <label for="overdraftLimit">Overdraft Limit</label>
-            <input type="number" name="overdraftLimit" value="@editAccount.OverdraftLimit" />
+            <label required for="overdraftLimit">Overdraft Limit</label>
+            <input type="number" name="overdraftLimit" required min="0" max="500.00"
+                   value="@editAccount.OverdraftLimit" />
 
-            <label for="accountType">Account Type</label>
-            <select name="accountType">
+            <label required for="accountType">Account Type</label>
+            <select name="accountType" required>
                 <option value="Chequing" selected="@(editAccount.AccountType == AccountType.Chequing)">Chequing</option>
                 <option value="Savings" selected="@(editAccount.AccountType == AccountType.Savings)">Savings</option>
                 <option value="Credit" selected="@(editAccount.AccountType == AccountType.Credit)">Credit</option>
@@ -130,16 +158,16 @@
         @myGrid.GetHtml()
     </div>
     @*// display all the data
-    foreach (var row in data)
-    {
-        <div>
-            <form method="post">
-                <input type="submit" value="Edit" name="accountAction" />
-                <input type="hidden" value="@row.AccountNumber" name="editAccountNumber" />
-                @row.AccountHolder has a @row.AccountType account.
-            </form>
-        </div>
-    }*@
+        foreach (var row in data)
+        {
+            <div>
+                <form method="post">
+                    <input type="submit" value="Edit" name="accountAction" />
+                    <input type="hidden" value="@row.AccountNumber" name="editAccountNumber" />
+                    @row.AccountHolder has a @row.AccountType account.
+                </form>
+            </div>
+        }*@
     <form method="post">
         <input type="submit" value="Purge Accounts" name="accountAction" />
     </form>
