@@ -30,14 +30,24 @@
         {
             // Get the data from the database
             var data = db.Query(sqlQuery, searchName); // The searchName is SAFELY placed in the sqlQuery
-                                                       // when you do it this way.
-                                                       // Otherwise, if you concatenate the query string
-                                                       // yourself, you will be open to an SQL Injection Attack.
+            // when you do it this way.
+            // Otherwise, if you concatenate the query string
+            // yourself, you will be open to an SQL Injection Attack.
             var myGrid = new WebGrid(data);
-            
+
             <div>
                 <h3>Artist Names</h3>
-                @myGrid.GetHtml()
+                @myGrid.GetHtml(tableStyle: "table table-striped table-hover",
+                                columns: myGrid.Columns(
+                                    myGrid.Column(columnName: "ArtistId", header: "ID",
+                                                  format: @<text><i>@item.ArtistId</i></text>),
+                                    myGrid.Column(columnName: "Name", header: "Artist Name",
+                                                  format: @<text>
+                                            <a href="~/DemoForms/SearchResults.cshtml?aid=@item.ArtistId">
+                                                @item.Name
+                                            </a>
+                                                           </text>)
+                ))
             </div>
         }
         catch (Exception ex)
@@ -49,6 +59,11 @@
 
 
 @section head {
+    <style type="text/css">
+        .table-hover > tbody > tr:hover {
+            background-color: #b5f3f3;
+        }
+    </style>
 }
 @section pageSubTitle {
     WebGrid with Navigation Links
