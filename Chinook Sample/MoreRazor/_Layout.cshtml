@@ -2,9 +2,29 @@
 <html>
     <head>
         <title>@Page.Title</title>
+        <script src="~/Scripts/jquery-2.2.0.js"></script>
+        <script src="~/Scripts/bootstrap.js"></script>
+        <link href="~/Content/bootstrap.css" rel="stylesheet" />
+        <link href="~/Content/font-awesome.css" rel="stylesheet" />
         @RenderSection("head", required: false)
     </head>
     <body>
-        @RenderBody()
+        <div class="container">
+            @RenderPage("~/_Menu.cshtml")
+            <header class="page-header">
+                <h1>@Page.Title <small>@RenderSection("pageSubTitle", required:false)</small></h1>
+            </header>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="row">
+                        @RenderBody()
+                    </div>
+                </div>
+                <div class="col-md-4 bg-info">
+                    <h4>Notes</h4>
+                    @RenderSection("pageNotes", required: true)
+                </div>
+            </div>
+        </div>
     </body>
 </html>

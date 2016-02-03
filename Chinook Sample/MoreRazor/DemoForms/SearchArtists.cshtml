@@ -1,0 +1,33 @@
+﻿@{
+    Page.Title = "Search Artists";
+    Layout = "~/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <form>
+        <fieldset>
+            <label for="partialName">Enter a partial artist name</label>
+            <input type="text" name="partialName" placeholder="Artist Name" />
+            <button type="submit">Search</button>
+            <button type="reset">Reset</button>
+        </fieldset>
+    </form>
+</div>
+
+
+@section head {
+}
+@section pageSubTitle {
+    WebGrid with Navigation Links
+}
+@section pageNotes {
+<div>This page shows how to display data from a database ina WebGrid with a customized column with links to another page. It also demonstrates how to search a database with user input and how to <b>safely</b> wrap that input with SQL wildcards.</div>
+<h5>SQL Statements</h5>
+<figure>
+    <pre><code>SELECT ArtistId, Name
+FROM Artist
+WHERE Name LIKE @@0
+</code></pre>
+    <figcaption></figcaption>
+</figure>
+}
