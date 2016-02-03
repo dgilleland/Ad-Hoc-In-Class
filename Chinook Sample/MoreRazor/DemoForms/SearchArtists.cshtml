@@ -1,17 +1,50 @@
 ﻿@{
     Page.Title = "Search Artists";
     Layout = "~/_Layout.cshtml";
+    var partial = Request["partialName"];
+
+
 }
 
 <div class="col-md-12">
-    <form>
+    <form method="post">
         <fieldset>
             <label for="partialName">Enter a partial artist name</label>
-            <input type="text" name="partialName" placeholder="Artist Name" />
-            <button type="submit">Search</button>
-            <button type="reset">Reset</button>
+            <input type="text" name="partialName" placeholder="Artist Name" value="@partial" />
+            <button class="btn btn-primary" type="submit"><span class="fa fa-search"></span> Search</button>
+            <button class="btn btn-default" type="reset">Reset</button>
         </fieldset>
     </form>
+
+    @if (IsPost)
+    {
+        // I can use Database.Open if I include the NuGet Library for Microsoft.AspNet.WebPages.WebData
+        var db = Database.Open("ChinookDb");
+        // Otherwise, if I only have the NuGet Library of Microsoft.AspNet.WebPages.Data
+        // var db = WebMatrix.Data.Database.Open("ChinookDb");
+
+        var sqlQuery = "SELECT ArtistId, Name FROM Artist WHERE Name LIKE @0";
+        var searchName = "%" + partial + "%"; // Wrap the search request in wildcards
+
+        try
+        {
+            // Get the data from the database
+            var data = db.Query(sqlQuery, searchName); // The searchName is SAFELY placed in the sqlQuery
+                                                       // when you do it this way.
+                                                       // Otherwise, if you concatenate the query string
+                                                       // yourself, you will be open to an SQL Injection Attack.
+            var myGrid = new WebGrid(data);
+            
+            <div>
+                <h3>Artist Names</h3>
+                @myGrid.GetHtml()
+            </div>
+        }
+        catch (Exception ex)
+        {
+            <p>Error: @ex.Message</p>
+        }
+    }
 </div>
 
 
@@ -21,13 +54,13 @@
     WebGrid with Navigation Links
 }
 @section pageNotes {
-<div>This page shows how to display data from a database ina WebGrid with a customized column with links to another page. It also demonstrates how to search a database with user input and how to <b>safely</b> wrap that input with SQL wildcards.</div>
-<h5>SQL Statements</h5>
-<figure>
-    <pre><code>SELECT ArtistId, Name
+    <div>This page shows how to display data from a database ina WebGrid with a customized column with links to another page. It also demonstrates how to search a database with user input and how to <b>safely</b> wrap that input with SQL wildcards.</div>
+    <h5>SQL Statements</h5>
+    <figure>
+        <pre><code>SELECT ArtistId, Name
 FROM Artist
 WHERE Name LIKE @@0
 </code></pre>
-    <figcaption></figcaption>
-</figure>
+        <figcaption></figcaption>
+    </figure>
 }
