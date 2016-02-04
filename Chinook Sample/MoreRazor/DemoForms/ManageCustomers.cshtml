@@ -22,13 +22,7 @@
                                                 grid.Column("Company"),
                                                 grid.Column("SupportRep"),
                                                 grid.Column("CustomerId", "Edit",
-                                                @<form action="~/DemoForms/EditCustomers.cshtml" method="post">
-                                                    <input type="hidden" value="@item.CustomerId" name="customerId" />
-                                                    <button class="btn btn-default">
-                                                        <span class="fa fa-pencil"></span>
-                                                    </button>
-                                                </form>))
-)
+                                                @EditButton)))
         </div>
     }
     catch (Exception ex)
@@ -36,6 +30,15 @@
         <p>Error: Unable to display customers @ex.Message</p>
     }
 </div>
+
+@helper EditButton(dynamic item){
+<form action="~/DemoForms/EditCustomers.cshtml" method="post">
+    <input type="hidden" value="@item.CustomerId" name="customerId" />
+    <button class="btn btn-default">
+        <span class="fa fa-pencil"></span>
+    </button>
+</form>
+}
 
 @section head {
 

@@ -65,7 +65,7 @@
         <select name="supportRepId" class="form-control">
             @foreach(var person in reps)
             { 
-            <option value="value" selected="@(@data.SupportRepId == person.EmployeeId)">@person.EmployeeName</option>
+            <option value="@person.EmployeeId" selected="@(@data.SupportRepId == person.EmployeeId)">@person.EmployeeName</option>
             }
         </select>
 
