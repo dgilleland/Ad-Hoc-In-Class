@@ -1,10 +1,82 @@
 ﻿@{
-    Page.Title = "";
+    Page.Title = "Edit Customer";
     Layout = "~/_Layout.cshtml";
+    var customerId = Request["customerId"];
+    if(!IsPost || customerId.IsEmpty())
+    {
+        Response.Redirect("~/DemoForms/ManageCustomers.cshtml");
+    }
+
+    var db = Database.Open("ChinookDb");
+    var customerQuery = "SELECT  CustomerId, FirstName, LastName,"
+                      + " Company, Address, City, State,"
+                      + " Country, PostalCode, Phone, Fax,"
+                      + " Email, SupportRepId"
+                      + " FROM    Customer"
+                      + " WHERE   CustomerId = @0";
+    var data = db.QuerySingle(customerQuery, customerId);
+
+    var repQuery = "SELECT  EmployeeId,"
+                 + " LastName + ', ' + FirstName"
+                 + " AS EmployeeName"
+                 + " FROM    Employee"
+                 + " ORDER BY LastName";
+    var reps = db.Query(repQuery);
+    
 }
 
 <div class="col-md-12">
+    <form method="post">
+        <input type="hidden" name="customerId" value="@customerId" />
+        <label>First Name</label>
+        <input type="text" name="firstName" required value="@data.FirstName" class="form-control" />
 
+        <label>LastName</label>
+        <input type="text" name="lastName" required value="@data.LastName" class="form-control" />
+
+        <label>Company</label>
+        <input type="text" name="company" value="@data.Company" class="form-control" />
+
+        <label>Address</label>
+        <input type="text" name="address" value="@data.Address" class="form-control" />
+
+        <label>City</label>
+        <input type="text" name="city" value="@data.City" class="form-control" />
+
+        <label>State</label>
+        <input type="text" name="state" value="@data.State" class="form-control" />
+
+        <label>Country</label>
+        <input type="text" name="country" value="@data.Country" class="form-control" />
+
+        <label>Postal Code</label>
+        <input type="text" name="postalCode" value="@data.PostalCode" class="form-control" />
+
+        <label>Phone</label>
+        <input type="tel" name="phone" value="@data.Phone" class="form-control" />
+
+        <label>Fax</label>
+        <input type="tel" name="fax" value="@data.Fax" class="form-control" />
+
+        <label>Email</label>
+        <input type="email" name="email" value="@data.Email" class="form-control" />
+
+        <label>Support Rep</label>
+        <select name="supportRepId" class="form-control">
+            @foreach(var person in reps)
+            { 
+            <option value="value" selected="@(@data.SupportRepId == person.EmployeeId)">@person.EmployeeName</option>
+            }
+        </select>
+
+        <br />
+        <button type="submit" class="btn btn-primary">
+            <span class="badge"><i class="fa fa-check"></i></span> Update Customer
+        </button>
+        <button type="reset" class="btn btn-default">Reset Form</button>
+        <a href="~/DemoForms/ManageCustomers.cshtml" class="btn btn-default">Cancel</a>
+    </form>
+    <br /><br /><br /><br /><br /><br /><br /><br />
 </div>
 
 
@@ -12,9 +84,34 @@
 
 }
 @section pageSubTitle {
-
+    (Id = @customerId)
 }
 @section pageNotes {
-<h5>SQL Statements</h5>
-<pre><code></code></pre>
+    <h5>SQL Statements</h5>
+<pre><code>SELECT  CustomerId, FirstName, LastName,
+        Company, Address, City, State,
+        Country, PostalCode, Phone, Fax,
+        Email, SupportRepId
+FROM    Customer
+WHERE   CustomerId = @@0</code></pre>
+<pre><code>SELECT  EmployeeId,
+        LastName + ', ' + FirstName
+            AS EmployeeName
+FROM    Employee
+ORDER BY LastName</code></pre>
+<pre><code>UPDATE Customer
+   SET FirstName = @@1
+      ,LastName = @@2
+      ,Company = @@3
+      ,Address = @@4
+      ,City = @@5
+      ,State = @@6
+      ,Country = @@7
+      ,PostalCode = @@8
+      ,Phone = @@9
+      ,Fax = @@10
+      ,Email = @@11
+      ,SupportRepId = @@12
+WHERE CustomerId = @@0
+</code></pre>
 }

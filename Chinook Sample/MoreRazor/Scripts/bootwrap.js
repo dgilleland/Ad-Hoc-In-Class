@@ -19,7 +19,7 @@
                             switch ($(sibling).attr('type')) {
                                 case 'text':
                                     sibling.addClass(controlClassSize).addClass(controlClasses);
-                                    $(value).next().addBack().wrapAll('<div class="form-group" />')
+                                    $(value).next().addBack().wrapAll('<div class="form-group" />');
                                     break;
                                 case 'radio':
                                     break;
@@ -30,11 +30,11 @@
                                         //$(next).addClass('control-label')
                                         $(sibling).prependTo(next);
                                         $(next).wrapAll('<div class="checkbox" />').addClass(controlClassSize);
-                                        $(value).next().addBack().wrapAll('<div class="form-group" />')
+                                        $(value).next().addBack().wrapAll('<div class="form-group" />');
                                     } else {
                                         $(sibling).wrapAll('<div class="checkbox" />');
                                         //$(sibling).wrapAll('<label class="control-label" />').wrapAll('<div class="checkbox" />');
-                                        $(value).next().addBack().wrapAll('<div class="form-group" />')
+                                        $(value).next().addBack().wrapAll('<div class="form-group" />');
                                     }
 
                                     break;
@@ -45,7 +45,7 @@
                         }
                         case 'SELECT': {
                             sibling.addClass(controlClassSize).addClass(controlClasses);
-                            $(value).next().addBack().wrapAll('<div class="form-group" />')
+                            $(value).next().addBack().wrapAll('<div class="form-group" />');
                             break;
                         }
                         case 'TABLE': { // RadioButtonList/CheckBoxList .RepeatLayout="Table" (the default)

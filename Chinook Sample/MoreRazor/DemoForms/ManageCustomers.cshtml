@@ -1,20 +1,58 @@
 ﻿@{
-    Page.Title = "";
+    Page.Title = "Manage Customers";
     Layout = "~/_Layout.cshtml";
+
+    var db = Database.Open("ChinookDb");
+    var query = "SELECT  CustomerId, C.FirstName + ' ' + C.LastName AS 'Customer',"
+              + " C.Company, E.FirstName + ' ' + E.LastName AS 'SupportRep'"
+              + " FROM    Customer C"
+              + " INNER JOIN Employee E"
+              + " ON E.EmployeeId = C.SupportRepId"
+              + " ORDER BY C.LastName";
 }
 
 <div class="col-md-12">
-
+    @try
+    {
+        var data = db.Query(query);
+        var grid = new WebGrid(data);
+        <div>
+            @grid.GetHtml(tableStyle: "table table-border table-hover",
+                          columns: grid.Columns(grid.Column("Customer"),
+                                                grid.Column("Company"),
+                                                grid.Column("SupportRep"),
+                                                grid.Column("CustomerId", "Edit",
+                                                @<form action="~/DemoForms/EditCustomers.cshtml" method="post">
+                                                    <input type="hidden" value="@item.CustomerId" name="customerId" />
+                                                    <button class="btn btn-default">
+                                                        <span class="fa fa-pencil"></span>
+                                                    </button>
+                                                </form>))
+)
+        </div>
+    }
+    catch (Exception ex)
+    {
+        <p>Error: Unable to display customers @ex.Message</p>
+    }
 </div>
-
 
 @section head {
 
 }
 @section pageSubTitle {
-
+<a href="~/DemoForms/AddCustomer.cshtml" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Add New...</a>
 }
 @section pageNotes {
-<h5>SQL Statements</h5>
-<pre><code></code></pre>
+    <h5>SQL Statements</h5>
+<pre><code>SELECT  CustomerId,
+        C.FirstName + ' ' + C.LastName
+            AS 'Customer',
+        C.Company, 
+        E.FirstName + ' ' + E.LastName
+            AS 'SupportRep'
+FROM    Customer C
+    INNER JOIN Employee E
+    ON E.EmployeeId = C.SupportRepId
+ORDER BY C.LastName</code></pre>
 }

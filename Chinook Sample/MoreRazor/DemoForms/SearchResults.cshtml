@@ -5,20 +5,66 @@
 }
 
 <div class="col-md-12">
-    <h3>Searching Albums for Artist ID: @artistId</h3>
+    <h3>Search Results: Albums for Artist ID: @artistId</h3>
 </div>
+
+@if (artistId.IsEmpty())
+{
+    // Redirect to the search artists page
+    Response.Redirect("~/DemoForms/SearchArtists.cshtml", true);
+}
+else
+{
+    var db = Database.Open("ChinookDb");
+    var sqlQuery = "SELECT A.ArtistId, A.Name, Alb.AlbumId, Alb.Title"
+                 + " FROM Artist A"
+                 + " INNER JOIN Album Alb ON  A.ArtistId = Alb.ArtistId"
+                 + " WHERE A.ArtistId = @0";
+    try
+    {
+        var albums = db.Query(sqlQuery, artistId);
+        var grid = new WebGrid(albums);
+        <div>
+            @grid.GetHtml(tableStyle: "table table-striped table-hover",
+                              columns: SetColumns(ColumnHeader("ArtistId", "ID"),
+                                                  ColumnHeader("Name", "Artist"),
+                                                  ColumnHeader("AlbumId", "Album Id"),
+                                                  ColumnHeader("Title", "Album Title")))
+        </div>
+    }
+    catch (Exception ex)
+    {
+        <p>Error: @ex.Message</p>
+    }
+}
+
+@functions {
+    WebGridColumn ColumnHeader(string columnName, string headerText)
+    {
+        var col = new WebGridColumn();
+        col.ColumnName = columnName;
+        col.Header = headerText;
+        return col;
+    }
+    IEnumerable<WebGridColumn> SetColumns(params WebGridColumn[] cols)
+    {
+        return cols;
+    }
+}
 
 
 @section head {
 
 }
 @section pageSubTitle {
-<i class="fa fa-music"></i> Albums by Artist
+    <i class="fa fa-music"></i> Albums by Artist
 }
 @section pageNotes {
-<h5>SQL Statements</h5>
-<pre><code>SELECT A.ArtistId, A.Name, Alb.AlbumId, Alb.Title
-FROM Artist A
-INNER JOIN Album Alb ON A.ArtistId = Alb.ArtistId
-WHERE A.ArtistId = @@0</code></pre>
+    <h5>SQL Statements</h5>
+<pre><code>SELECT  A.ArtistId, A.Name,
+        Alb.AlbumId, Alb.Title
+FROM    Artist A
+    INNER JOIN Album Alb
+    ON  A.ArtistId = Alb.ArtistId
+WHERE   A.ArtistId = @@0</code></pre>
 }

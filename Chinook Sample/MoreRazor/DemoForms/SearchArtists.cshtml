@@ -3,14 +3,16 @@
     Layout = "~/_Layout.cshtml";
     var partial = Request["partialName"];
 
-
+    Validation.Add("partialName",
+                   Validator.Required("You must enter a partial name in order to perform a search"),
+                   Validator.StringLength(20, 2, "Partial name must be at least 2 characters long"));
 }
 
 <div class="col-md-12">
     <form method="post">
         <fieldset>
             <label for="partialName">Enter a partial artist name</label>
-            <input type="text" name="partialName" placeholder="Artist Name" value="@partial" />
+            <input type="text" name="partialName" placeholder="Artist Name" value="@partial" required minlength="2" />
             <button class="btn btn-primary" type="submit"><span class="fa fa-search"></span> Search</button>
             <button class="btn btn-default" type="reset">Reset</button>
         </fieldset>
@@ -18,42 +20,49 @@
 
     @if (IsPost)
     {
-        // I can use Database.Open if I include the NuGet Library for Microsoft.AspNet.WebPages.WebData
-        var db = Database.Open("ChinookDb");
-        // Otherwise, if I only have the NuGet Library of Microsoft.AspNet.WebPages.Data
-        // var db = WebMatrix.Data.Database.Open("ChinookDb");
-
-        var sqlQuery = "SELECT ArtistId, Name FROM Artist WHERE Name LIKE @0";
-        var searchName = "%" + partial + "%"; // Wrap the search request in wildcards
-
-        try
+        if (Validation.IsValid())
         {
-            // Get the data from the database
-            var data = db.Query(sqlQuery, searchName); // The searchName is SAFELY placed in the sqlQuery
-            // when you do it this way.
-            // Otherwise, if you concatenate the query string
-            // yourself, you will be open to an SQL Injection Attack.
-            var myGrid = new WebGrid(data);
+            // I can use Database.Open if I include the NuGet Library for Microsoft.AspNet.WebPages.WebData
+            var db = Database.Open("ChinookDb");
+            // Otherwise, if I only have the NuGet Library of Microsoft.AspNet.WebPages.Data
+            // var db = WebMatrix.Data.Database.Open("ChinookDb");
 
-            <div>
-                <h3>Artist Names</h3>
-                @myGrid.GetHtml(tableStyle: "table table-striped table-hover",
+            var sqlQuery = "SELECT ArtistId, Name FROM Artist WHERE Name LIKE @0";
+            var searchName = "%" + partial + "%"; // Wrap the search request in wildcards
+
+            try
+            {
+                // Get the data from the database
+                var data = db.Query(sqlQuery, searchName); // The searchName is SAFELY placed in the sqlQuery
+                // when you do it this way.
+                // Otherwise, if you concatenate the query string
+                // yourself, you will be open to an SQL Injection Attack.
+                var myGrid = new WebGrid(data);
+
+                <div>
+                    <h3>Artist Names</h3>
+                    @myGrid.GetHtml(tableStyle: "table table-striped table-hover",
                                 columns: myGrid.Columns(
                                     myGrid.Column(columnName: "ArtistId", header: "ID",
                                                   format: @<text><i>@item.ArtistId</i></text>),
                                     myGrid.Column(columnName: "Name", header: "Artist Name",
                                                   format: @<text>
-                                            <a href="~/DemoForms/SearchResults.cshtml?aid=@item.ArtistId">
-                                                @item.Name
-                                            </a>
-                                                           </text>)
-                ))
-            </div>
+                                        <a href="~/DemoForms/SearchResults.cshtml?aid=@item.ArtistId">
+                                            @item.Name
+                                        </a>
+                                                </text>)
+                                                     ))
+                </div>
+            }
+            catch (Exception ex)
+            {
+                <p>Error: @ex.Message</p>
+            }
         }
-        catch (Exception ex)
+        else
         {
-            <p>Error: @ex.Message</p>
-        }
+
+        <div class="bg-danger">@Html.ValidationSummary("Error processing your request on the server:")</div>}
     }
 </div>
 
