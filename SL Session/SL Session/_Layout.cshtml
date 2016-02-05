@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>@Page.Title</title>
+        <script src="~/Scripts/jquery-2.2.0.js"></script>
+        <script src="~/Scripts/bootstrap.js"></script>
+        <link href="~/Content/bootstrap.css" rel="stylesheet" />
+        <link href="~/Content/font-awesome.css" rel="stylesheet" />
+        @RenderSection("head", required: false)
+    </head>
+    <body>
+        <div class="container">
+            <div class="pageheader"><h1>@Page.Title</h1></div>
+            <div class="row">
+                <div class="col-md-12">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,105 @@
+﻿@{
+    Page.Title = "Title goes here";
+    Layout = "~/_Layout.cshtml";
+    Dictionary<string, object> debugOutput = new Dictionary<string, object>();
+}
+
+<div class="row">
+    <div class="col-sm-7">
+        <h3>Welcome to Learning@@Nait</h3>
+        <div>
+            <form method="post">
+                <label>Known Languages</label>
+                <div>
+                    <input type="checkbox" name="lang" value="csharp" />
+                    <label>C#</label>
+                    <input type="checkbox" name="lang" value="vb" />
+                    <label>VB.NET</label>
+                    <input type="checkbox" name="lang" value="html" />
+                    <label>HTML</label>
+                    <input type="checkbox" name="lang" value="javascript" />
+                    <label>JavaScript</label>
+                </div>
+                <label>IDEs</label>
+                <div>
+                    <!-- Using the HTML Helper -->
+                    @Html.CheckBox("ide", new { value = "Visual Studio 2013" }) <label>VS 2013</label>
+
+                    <!-- Using my custom Helper -->
+                    @CheckboxWithLabel("Android Studio", "ide", "Andriod Studio")
+
+                    <!-- Using plain html -->
+                    <input type="checkbox" name="ide" value="Visual Studio Code" />
+                    <label>VS Code</label>
+
+                    <!-- Using HTML Helpers for the checkbox and the label -->
+                    @Html.CheckBox("ide", new { value = "Notepad" })
+                    @Html.Label("Text editor")
+                </div>
+                <button type="submit">Tell Me!</button>
+            </form>
+            @if (IsPost)
+            {
+                string langString = Request["lang"]; // comma-separated list of values for the "lang" key
+                <div style="background-color:yellow;">@langString</div>
+                debugOutput.Add("original langString", langString);
+
+                if(langString.IsEmpty())
+                {
+                <p>Aww, you should go to DMIT at NAIT.</p>
+                }
+                else
+                {
+                    string[] languages = langString.Split(','); // divy up a comma-separated list
+                    debugOutput.Add("array of items", languages.Length);
+                <ul>
+                    @foreach(string item in languages)
+                        {
+                        <li>@item</li>
+                        }
+                </ul>
+                }
+            }
+        </div>
+    </div>
+    <div class="col-sm-5">
+        <div style="background-color:aquamarine; width:100%">
+            <h3>Debug info.....</h3>
+            <ul>
+                @foreach (KeyValuePair<string, object> item in debugOutput)
+            {
+                    <li><b>@item.Key</b> =&gt; <code>@item.Value</code></li>
+            }
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 bg-info">
+        <div class="row">
+            <div class="col-sm-4">
+                &copy; 2016 - DMIT at NAIT &reg;
+            </div>
+            <div class="col-sm-4">
+                <h5>Extra Resources</h5>
+            </div>
+            <div class="col-sm-4">
+                <ul>
+                    <li>Consectetur adipiscing elit fusce vel.</li>
+                    <li>Consectetur adipiscing elit fusce vel.</li>
+                    <li>Consectetur adipiscing elit fusce vel.</li>
+                    <li>Consectetur adipiscing elit fusce vel.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@helper CheckboxWithLabel(string labelText, string name, string value, bool isChecked = false)
+{
+    @Html.CheckBox(name, isChecked, new { value = value })
+    @Html.Label(labelText)
+}
+
+
