@@ -1,10 +1,128 @@
 ﻿@{
     Page.Title = "";
     Layout = "~/_Layout.cshtml";
+    // Get the parameter values (for use in post-back and in retaining info in the form)
+    var customerId = Request["customerId"];
+    var firstName = Request["firstName"];
+    var lastName = Request["lastName"];
+    var company = Request["company"];
+    var address = Request["address"];
+    var city = Request["city"];
+    var state = Request["state"];
+    var country = Request["country"];
+    var postalCode = Request["postalCode"];
+    var phone = Request["phone"];
+    var fax = Request["fax"];
+    var email = Request["email"];
+    int supportRepId;
+    // One approach: do a TryParse, and if it doesn't exist in the request, then supportRepId will be 0.
+    int.TryParse(Request["supportRepId"], out supportRepId);
+    // Here's an alternate approach
+    //var support = Request["supportRepId"];
+    //if(support.IsInt())
+    //{
+    //    supportRepId = int.Parse(support);
+    //}
+    //else
+    //{
+    //    supportRepId = 0;
+    //}
+
+    var db = Database.Open("ChinookDb");
+    var repQuery = "SELECT  EmployeeId,"
+                 + " LastName + ', ' + FirstName"
+                 + " AS EmployeeName"
+                 + " FROM    Employee"
+                 + " ORDER BY LastName";
+    var reps = db.Query(repQuery);
+
+    if (IsPost)
+    {
+        var addQuery = "INSERT INTO Customer("
+                     + " FirstName, LastName,"
+                     + " Company, Address, City, State,"
+                     + " Country, PostalCode, Phone,"
+                     + " Fax, Email, SupportRepId)"
+                     + " VALUES  (@0, @1, @2, @3,"
+                     + " @4, @5, @6, @7,"
+                     + " @8, @9, @10, @11)";
+        try
+        {
+            int? repId = null;
+            if(supportRepId > 0)
+            {
+                repId = supportRepId;
+            }
+            db.Execute(addQuery, firstName, lastName, 
+                       company, address, city, state, 
+                       country, postalCode, phone, 
+                       fax, email, repId);
+            <div class="bg-success">Customer added successfully.</div>
+        }
+        catch (Exception ex)
+        {
+            <div class="bg-warning">Error: @ex.Message.</div>
+        }
+    }
 }
 
 <div class="col-md-12">
+    <form method="post">
+        <input type="hidden" name="customerId" value="@customerId" />
+        <label>First Name</label>
+        <input type="text" name="firstName" required value="@firstName" class="form-control" />
 
+        <label>LastName</label>
+        <input type="text" name="lastName" required value="@lastName" class="form-control" />
+
+        <label>Company</label>
+        <input type="text" name="company" value="@company" class="form-control" />
+
+        <label>Address</label>
+        <input type="text" name="address" value="@address" class="form-control" />
+
+        <label>City</label>
+        <input type="text" name="city" value="@city" class="form-control" />
+
+        <label>State</label>
+        <input type="text" name="state" value="@state" class="form-control" />
+
+        <label>Country</label>
+        <input type="text" name="country" value="@country" class="form-control" />
+
+        <label>Postal Code</label>
+        <input type="text" name="postalCode" value="@postalCode" class="form-control" />
+
+        <label>Phone</label>
+        <input type="tel" name="phone" value="@phone" class="form-control" />
+
+        <label>Fax</label>
+        <input type="tel" name="fax" value="@fax" class="form-control" />
+
+        <label>Email</label>
+        <input type="email" name="email" value="@email" class="form-control" />
+
+        <label>Support Rep</label>
+        <select name="supportRepId" class="form-control">
+            <option value="0">[select a support rep]</option>
+            @foreach (var person in reps)
+            {
+                <option value="@person.EmployeeId"
+                        selected="@(@supportRepId == person.EmployeeId)">
+                              <!--  my customer's rep      employee id     -->
+                    @person.EmployeeName
+                </option>
+            }
+        </select>
+
+        <br />
+        <button type="submit" class="btn btn-primary" name="buttonAction" value="Update">
+            <span class="badge"><i class="fa fa-plus"></i></span> Add Customer
+        </button>
+        <button type="reset" class="btn btn-default">Reset Form</button>
+        <a href="~/DemoForms/ManageCustomers.cshtml" class="btn btn-default">Cancel</a>
+    </form>
+    <br /><br /><br /><br /><br /><br /><br /><br />
 </div>
 
 
@@ -15,6 +133,18 @@
 
 }
 @section pageNotes {
-<h5>SQL Statements</h5>
-<pre><code></code></pre>
+    <h5>SQL Statements</h5>
+<pre><code>SELECT  EmployeeId,
+        LastName + ', ' + FirstName
+            AS EmployeeName
+FROM    Employee
+ORDER BY LastName</code></pre>
+<pre><code>INSERT INTO Customer(
+        FirstName, LastName,
+        Company, Address, City, State,
+        Country, PostalCode, Phone,
+        Fax, Email, SupportRepId)
+VALUES  (@@0, @@1, @@2, @@3,
+         @@4, @@5, @@6, @@7,
+         @@8, @@9, @@10, @@11)</code></pre>
 }
