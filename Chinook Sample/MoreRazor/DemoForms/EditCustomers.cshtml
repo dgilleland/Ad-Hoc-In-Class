@@ -2,19 +2,65 @@
     Page.Title = "Edit Customer";
     Layout = "~/_Layout.cshtml";
     var customerId = Request["customerId"];
-    if(!IsPost || customerId.IsEmpty())
+    
+    var db = Database.Open("ChinookDb");
+    if (!IsPost || customerId.IsEmpty())
     {
         Response.Redirect("~/DemoForms/ManageCustomers.cshtml");
     }
+    else if (IsPost && "Update".Equals(Request["buttonAction"]))
+    {
+        var updateSql = "UPDATE Customer "
+                      + " SET FirstName = @1 "
+                      + " ,LastName = @2 "
+                      + " ,Company = @3 "
+                      + " ,Address = @4 "
+                      + " ,City = @5 "
+                      + " ,State = @6 "
+                      + " ,Country = @7 "
+                      + " ,PostalCode = @8 "
+                      + " ,Phone = @9 "
+                      + " ,Fax = @10 "
+                      + " ,Email = @11 "
+                      + " ,SupportRepId = @12 "
+                      + " WHERE CustomerId = @0";
+        try
+        {
+            // A little bit of code allowing a null value if the customer does not have a support rep.
+            int temp;
+            int.TryParse(Request["supportRepId"], out temp);
+            int? repId = null;
+            if (temp > 0)
+            {
+                repId = temp;
+            }
+            
+            db.Execute(updateSql, customerId, Request["firstName"], Request["lastName"], Request["company"], Request["address"], Request["city"], Request["state"], Request["country"], Request["postalCode"], Request["phone"], Request["fax"], Request["email"], repId);
+            <div class="bg-success">Customer updated successfully.</div>
+        }
+        catch (Exception ex)
+        {
+            <div class="bg-warning">Error: @ex.Message.</div>
+        }
+    }
 
-    var db = Database.Open("ChinookDb");
     var customerQuery = "SELECT  CustomerId, FirstName, LastName,"
                       + " Company, Address, City, State,"
                       + " Country, PostalCode, Phone, Fax,"
                       + " Email, SupportRepId"
                       + " FROM    Customer"
                       + " WHERE   CustomerId = @0";
-    var data = db.QuerySingle(customerQuery, customerId);
+    // The dynamic data type is needed because the kind of data returned from the database is not represented as a known class.
+    dynamic data = null;
+    try
+    {
+        // The return type of QuerySingle is dynamic
+        data = db.QuerySingle(customerQuery, customerId);
+    }
+    catch (Exception ex)
+    {
+        <div class="bg-warning">Error: @ex.Message.</div>
+    }
 
     var repQuery = "SELECT  EmployeeId,"
                  + " LastName + ', ' + FirstName"
@@ -22,7 +68,19 @@
                  + " FROM    Employee"
                  + " ORDER BY LastName";
     var reps = db.Query(repQuery);
-    
+    if (IsPost && "Delete".Equals(Request["buttonAction"]))
+    {
+        var deleteSql = "DELETE FROM Customer WHERE CustomerId = @0";
+        try
+        {
+            db.Execute(deleteSql, customerId);
+            <div class="bg-success">Customer deleted successfully.</div>
+        }
+        catch (Exception ex)
+        {
+            <div class="bg-warning">Error: @ex.Message.</div>
+        }
+    }
 }
 
 <div class="col-md-12">
@@ -63,17 +121,32 @@
 
         <label>Support Rep</label>
         <select name="supportRepId" class="form-control">
-            @foreach(var person in reps)
-            { 
-            <option value="@person.EmployeeId" selected="@(@data.SupportRepId == person.EmployeeId)">@person.EmployeeName</option>
+            <option value="0">[select a support rep]</option>
+            @foreach (var person in reps)
+            {
+                <option value="@person.EmployeeId"
+                        selected="@(@data.SupportRepId == person.EmployeeId)">
+                    @(@data.SupportRepId == person.EmployeeId)
+                  <!--  my customer's rep      employee id     -->
+                    @person.EmployeeName
+                </option>
             }
         </select>
 
         <br />
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary" name="buttonAction" value="Update">
             <span class="badge"><i class="fa fa-check"></i></span> Update Customer
         </button>
         <button type="reset" class="btn btn-default">Reset Form</button>
+        <button type="submit" class="btn btn-default"
+                name="buttonAction" value="Delete"
+                id="deleteButton">Delete Customer</button>
+        <script>
+            var delButton = document.getElementById("deleteButton");
+            delButton.onclick = function () {
+                return confirm('Are you sure you want to delete customer @customerId?');
+            };
+        </script>
         <a href="~/DemoForms/ManageCustomers.cshtml" class="btn btn-default">Cancel</a>
     </form>
     <br /><br /><br /><br /><br /><br /><br /><br />
@@ -114,4 +187,6 @@ ORDER BY LastName</code></pre>
       ,SupportRepId = @@12
 WHERE CustomerId = @@0
 </code></pre>
+<pre><code>DELETE FROM Customer         
+WHERE CustomerId = @@0</code></pre>
 }
