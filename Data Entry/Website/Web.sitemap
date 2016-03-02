@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode title="Data Entry"  description="Assorted Data Entry Forms">
+    <siteMapNode url="~/Default.aspx" title="Home"/>
+    <siteMapNode url="~/FormSamples/Default.aspx" title="Form Demos">
+      <siteMapNode url="~/FormSamples/StudentEnrollment.aspx" title="Student Enrollment"/>
+      <siteMapNode url="~/FormSamples/JobApplication.aspx" title="Job Application"/>
+      <siteMapNode url="~/FormSamples/CreateBankAccount.aspx" title="Bank Account"/>
+      <siteMapNode url="~/FormSamples/ContestEntry.aspx" title="Contest Entry"/>
+    </siteMapNode>
+    <siteMapNode url="~/Practice/Default.aspx" title="Practice Instructions"/>
+    <siteMapNode url="~/About" title="About"/>
+    <siteMapNode url="~/Contact" title="Contact"/>
+  </siteMapNode>
+</siteMap>
