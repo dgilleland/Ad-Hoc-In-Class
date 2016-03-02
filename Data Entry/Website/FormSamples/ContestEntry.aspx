@@ -51,11 +51,36 @@
                     Text="I agree to the terms of the contest." />
                 <br />
             </fieldset>
-            <asp:Button ID="Submit" runat="server" Text="Submit" />
+            <asp:Button ID="Submit" runat="server" Text="Submit" OnClick="Submit_Click" />
+            <asp:Button ID="ClearForm" runat="server" Text="Clear Form" CausesValidation="false" OnClick="ClearForm_Click" />
             <p>Note: You must agree to the contest terms in order to be entered.</p>
         </div>
         <div class="col-md-6">
             <asp:Label ID="MessageLabel" runat="server" />
+            <asp:ValidationSummary ID="ValidationSummary1" runat="server"
+                CssClass="alert alert-warning"
+                HeaderText="Please fix these problems on the form before submitting." />
+            
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
+                ControlToValidate="FirstName" Display="None"
+                ErrorMessage="You must supply your first name">
+            </asp:RequiredFieldValidator>
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" 
+                ControlToValidate="LastName" Display="None"
+                ErrorMessage="Last Name is required">
+            </asp:RequiredFieldValidator>
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" 
+                ControlToValidate="EmailAddress" Display="None"
+                ErrorMessage="I need your email to tell you when you won the contest">
+            </asp:RequiredFieldValidator>
+
+            <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" 
+                ControlToValidate="PostalCode" Display="None"
+                ValidationExpression="\D\d\D \d\D\d"
+                ErrorMessage="Postal codes must be in the format of A9A 9A9">
+            </asp:RegularExpressionValidator>
+            
+
             <p>Apply the following validation rules:</p>
             <ul>
                 <li>First and Last Name are required.</li>

@@ -37,6 +37,7 @@
             </fieldset>
             <p>
                 <asp:Button ID="Submit" runat="server" Text="Submit" OnClick="Submit_Click" />
+                <asp:Button ID="ClearForm" runat="server" Text="Clear Form" OnClick="ClearForm_Click" CausesValidation="false" />
             </p>
         </div>
         <div class="col-md-6">
