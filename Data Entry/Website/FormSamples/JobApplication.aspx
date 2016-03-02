@@ -19,18 +19,22 @@
                 <legend>Application Form</legend>
                 <asp:Label ID="Label1" runat="server" AssociatedControlID="FullName">Name</asp:Label>
                 <asp:TextBox ID="FullName" runat="server"></asp:TextBox>
+                <br />
 
                 <asp:Label ID="Label2" runat="server" AssociatedControlID="EmailAddress">Email</asp:Label>
                 <asp:TextBox ID="EmailAddress" runat="server"></asp:TextBox>
+                <br />
 
                 <asp:Label ID="Label3" runat="server" AssociatedControlID="PhoneNumber">Phone</asp:Label>
                 <asp:TextBox ID="PhoneNumber" runat="server"></asp:TextBox>
+                <br />
 
                 <asp:Label ID="Label4" runat="server" AssociatedControlID="FullOrPartTime">Full/Part Time</asp:Label>
                 <asp:RadioButtonList ID="FullOrPartTime" runat="server">
                     <asp:ListItem>Full time</asp:ListItem>
                     <asp:ListItem>Part time</asp:ListItem>
                 </asp:RadioButtonList>
+                <br />
 
                 <asp:Label ID="Label5" runat="server" AssociatedControlID="JobInSales">Jobs</asp:Label>
                 <div>
@@ -50,6 +54,13 @@
         </div>
         <div class="col-md-6">
             <asp:Label ID="MessageLabel" runat="server" />
+            <p>Apply the following validation rules:</p>
+            <ul>
+                <li>Name is required.</li>
+                <li>Email must be in the correct format: <code>\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*</code></li>
+                <li>Phone is required, and must be in the correct format: (###)###-#### &nbsp;&nbsp;<code>\(\d{3}\)?\s\d{3}-\d{4}</code></li>
+                <li>Full/Part Time must be chosen (it's required).</li>
+            </ul>
         </div>
     </div>
 

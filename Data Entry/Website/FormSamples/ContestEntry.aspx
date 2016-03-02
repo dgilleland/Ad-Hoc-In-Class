@@ -15,7 +15,7 @@
                 Please fill out the following form to enter the contest. This contest is only 
         available to residents in Western Canada.
             </p>
-            <fieldset>
+            <fieldset class="form-horizontal">
                 <legend>Entry Form</legend>
                 <asp:Label ID="Label1" runat="server" AssociatedControlID="FirstName">First Name</asp:Label>
                 <asp:TextBox ID="FirstName" runat="server"></asp:TextBox>
@@ -56,8 +56,15 @@
         </div>
         <div class="col-md-6">
             <asp:Label ID="MessageLabel" runat="server" />
+            <p>Apply the following validation rules:</p>
+            <ul>
+                <li>First and Last Name are required.</li>
+                <li>Postal Code must be in the correct format: <code>\D\d\D \d\D\d</code></li>
+                <li>Email is required.</li>
+            </ul>
+            <p>In addition, do a manual code-behind check of the AgreeToTerms checkbox.</p>
         </div>
     </div>
-
+    <script src="../Scripts/bootwrap-freecode.js"></script>
 </asp:Content>
 
