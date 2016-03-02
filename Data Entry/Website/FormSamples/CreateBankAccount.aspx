@@ -36,11 +36,30 @@
                 </asp:DropDownList>
             </fieldset>
             <p>
-                <asp:Button ID="Submit" runat="server" Text="Submit" />
+                <asp:Button ID="Submit" runat="server" Text="Submit" OnClick="Submit_Click" />
             </p>
         </div>
         <div class="col-md-6">
             <asp:Label ID="MessageLabel" runat="server" />
+            <div>
+                <%--Validation Controls--%>
+                <asp:ValidationSummary ID="ValidationSummary1" runat="server" CssClass="alert alert-warning alert-dismissible" HeaderText="Please fix the following problems before sumitting this form." />
+                <asp:RequiredFieldValidator ID="ValidateAccountHolder" runat="server" Display="None"
+                    ControlToValidate="AccountHolder" 
+                    ErrorMessage="The name of the holder of the account is required."></asp:RequiredFieldValidator>
+                <asp:RegularExpressionValidator ID="ValidateAccountNumber" runat="server" Display="None"
+                    ControlToValidate="AccountNumber" 
+                    ErrorMessage="Account numbers must be 10 digits." 
+                    ValidationExpression="[1-9]\d{9}?"></asp:RegularExpressionValidator>
+                <asp:CompareValidator ID="ValidateOpeningBalance" runat="server" Display="None"
+                    ControlToValidate="OpeningBalance" 
+                    ErrorMessage="Opening Balance must be greater than zero." 
+                    ValueToCompare="0" Operator="GreaterThan" Type="Currency"></asp:CompareValidator>
+                <asp:CompareValidator ID="ValidateOverdraftLimit" runat="server" Display="None"
+                    ControlToValidate="OverdraftLimit" 
+                    ErrorMessage="Overdraft Limit must be greater than or equal to zero." 
+                    ValueToCompare="0" Operator="GreaterThanEqual" Type="Currency"></asp:CompareValidator>
+            </div>
         </div>
     </div>
     <script src="../Scripts/bootwrap-freecode.js"></script>

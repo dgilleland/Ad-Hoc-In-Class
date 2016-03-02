@@ -47,8 +47,17 @@
                 </asp:DropDownList>
             </fieldset>
             <p>
-                <asp:Button ID="Submit" runat="server" Text="Submit" />
+                <asp:Button ID="Submit" runat="server" Text="Submit" OnClick="Submit_Click" />
             </p>
+            <div>
+                <%--Validation Controls--%>
+                <asp:ValidationSummary ID="ValidationSummary1" runat="server" CssClass="alert alert-warning alert-dismissible" HeaderText="Please fix the following problems before sumitting this form." />
+                <asp:RequiredFieldValidator ID="ValidateFirstName" runat="server" Display="None" ControlToValidate="FirstName" ErrorMessage="First name is required."/>
+                <asp:RequiredFieldValidator ID="ValidateLastName" runat="server" Display="None" ControlToValidate="LastName" ErrorMessage="Last name is required."/>
+                <asp:RequiredFieldValidator ID="ValidateSocialInsuranceNumber" runat="server" Display="None" ControlToValidate="SocialInsuranceNumber" ErrorMessage="Social Insurance Number is required. "/>
+                <asp:RangeValidator ID="ValidateSINDigits" runat="server" Display="None" ControlToValidate="SocialInsuranceNumber" ErrorMessage="SIN numbers are nine digit." MaximumValue="999999999" MinimumValue="100000000" Type="Integer"/>
+                <asp:RegularExpressionValidator ID="ValidateDateOfBirth" runat="server" Display="None" ControlToValidate="DateOfBirth" ErrorMessage="Must be a valid date (yyyy-mm-dd)." ValidationExpression="(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])"/>
+            </div>
         </div>
         <div class="col-md-6">
             <asp:Label ID="MessageLabel" runat="server" />

@@ -10,4 +10,11 @@ partial class FormSamples_CreateBankAccount
     protected void Page_Load(Object sender, EventArgs e)
     {
     }
+    protected void Submit_Click(object sender, EventArgs e)
+    {
+        if (IsValid)
+        {
+            MessageLabel.Text = "Your new bank account will be processed soon.";
+        }
+    }
 }

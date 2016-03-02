@@ -21,4 +21,11 @@ partial class FormSamples_StudentEnrollment
 		     }
         }
     }
+    protected void Submit_Click(object sender, EventArgs e)
+    {
+        if (IsValid)
+        {
+            MessageLabel.Text = "Thank you for registering. A confirmation letter will be sent to you in the next few days.";
+        }
+    }
 }
