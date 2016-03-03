@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Demo - Student Enrollment" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="false" CodeFile="StudentEnrollment.aspx.cs" Inherits="FormSamples_StudentEnrollment" %>
+﻿<%@ Page Title="Demo - Student Enrollment" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="StudentEnrollment.aspx.cs" Inherits="FormSamples_StudentEnrollment" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="Server">
     <div class="page-header">
@@ -11,6 +11,8 @@
             (the <code style="font-style: normal;">form-control</code> class on form elements).
         </blockquote>
     </div>
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+        <ContentTemplate>
     <div class="row">
         <div class="col-md-6">
             <p>
@@ -61,8 +63,15 @@
         </div>
         <div class="col-md-6">
             <asp:Label ID="MessageLabel" runat="server" />
+            <asp:GridView ID="RegistrationGridView" runat="server">
+                <EmptyDataTemplate>
+                    There are no registrations to display
+                </EmptyDataTemplate>
+            </asp:GridView>
         </div>
     </div>
 
+        </ContentTemplate>
+    </asp:UpdatePanel>
 </asp:Content>
 
