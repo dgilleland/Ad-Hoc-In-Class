@@ -10,6 +10,7 @@
 
     <div class="row">
         <div class="col-md-6">
+            <asp:LinkButton ID="ProcessTextboxes" runat="server" CssClass="btn btn-default" OnClick="ProcessTextboxes_Click" Text="Process Textboxes"></asp:LinkButton>
             <fieldset>
                 <legend>Textbox Controls</legend>
                 <asp:Label ID="Label1" runat="server" AssociatedControlID="TextBox1">TextBox</asp:Label>
@@ -69,14 +70,15 @@
         </div>
 
         <div class="col-md-6">
+            <asp:LinkButton ID="ProcessListControls" runat="server" CssClass="btn btn-default" OnClick="ProcessListControls_Click">Process List Controls</asp:LinkButton>
             <fieldset>
                 <legend>List Controls</legend>
                 <asp:Label ID="Label23" runat="server" AssociatedControlID="DropDownList1">DropDownList</asp:Label>
                 <asp:DropDownList ID="DropDownList1" runat="server">
                     <asp:ListItem Text="text1" />
-                    <asp:ListItem Text="text2" />
-                    <asp:ListItem Text="text3" />
-                    <asp:ListItem Text="text4" />
+                    <asp:ListItem Text="text2" Value="2nd" />
+                    <asp:ListItem Text="text3" Value="99" />
+                    <asp:ListItem Text="text4" Value="Last" />
                 </asp:DropDownList>
 
                 <asp:Label ID="Label24" runat="server" AssociatedControlID="ListBox1">ListBox - Single</asp:Label>
@@ -112,6 +114,7 @@
             </fieldset>
         </div>
         <div class="col-md-6">
+            <asp:LinkButton ID="ProcessOthers" runat="server" CssClass="btn btn-default" OnClick="ProcessOthers_Click">Process Others</asp:LinkButton>
             <fieldset>
                 <legend>Other Controls</legend>
                 <asp:Label ID="Label20" runat="server" AssociatedControlID="CheckBox1">Single CheckBox</asp:Label>
