@@ -12,7 +12,7 @@ namespace NorthwindEntities
         public int? SupplierID { get; set; }
         public int? CategoryID { get; set; }
         public string QuantityPerUnit { get; set; }
-        public double? UnitPrice { get; set; }
+        public decimal? UnitPrice { get; set; }
         public short? UnitsInStock { get; set; }
         public short? UnitsOnOrder { get; set; }
         public short? ReorderLevel { get; set; }
@@ -27,7 +27,7 @@ namespace NorthwindEntities
                        int? supplierid,
                        int? categoryid,
                        string quantityperunit,
-                       double? unitprice,
+                       decimal? unitprice,
                        short? unitsinstock,
                        short? unitsonorder,
                        short? reorderlevel,

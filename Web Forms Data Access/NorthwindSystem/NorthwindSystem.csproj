@@ -49,6 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\CategoryController.cs" />
+    <Compile Include="BLL\CountryController.cs" />
+    <Compile Include="BLL\ProductController.cs" />
+    <Compile Include="BLL\SupplierController.cs" />
     <Compile Include="DAL\NorthwindContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

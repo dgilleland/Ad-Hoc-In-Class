@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+    <siteMapNode title="Root Menu">
+      <siteMapNode url="~/Default.aspx" title="Home" />
+      <siteMapNode url="~/Admin/AddEditCategory.aspx" title="Categories" />
+      <siteMapNode url="~/Admin/AddEditProduct.aspx" title="Products" />
+      <siteMapNode url="~/Admin/AddEditSupplier.aspx" title="Suppliers" />
+    </siteMapNode>
+</siteMap>

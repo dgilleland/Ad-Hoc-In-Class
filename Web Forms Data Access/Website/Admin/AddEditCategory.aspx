@@ -9,10 +9,11 @@
         <h1 class="page-header">Add/Edit Categories</h1>
     </div>
     <div class="row">
-        <div class="col-sm-6">
+        <div class="pull-right col-sm-6">
+            <fieldset><legend>Form Actions</legend></fieldset>
             <div class="form-inline">
                 <div class="form-group">
-                    <asp:Label ID="Label1" runat="server" CssClass="control-label" Text="Categories" AssociatedControlID="CategoryList"></asp:Label>
+                    <asp:Label ID="Label1" runat="server" CssClass="control-label" Text="Categories" AssociatedControlID="CurrentCategories"></asp:Label>
                     <asp:DropDownList ID="CurrentCategories" runat="server" CssClass="form-control"></asp:DropDownList>
                     <asp:LinkButton ID="LookupCategory" runat="server" CssClass="btn btn-primary" OnClick="LookupCategory_Click" CausesValidation="false">Lookup Category</asp:LinkButton>
                 </div>
