@@ -3,9 +3,9 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="jumbotron">
-        <h1>ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-        <p><a href="http://www.asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+        <img src="Images/stick_figure_micromanaged_150_wht_9338.gif" class="img-responsive pull-right col-md-2 img-thumbnail" />
+        <h1>Northwind Traders <small>Admin Site</small></h1>
+        <p class="lead">This site is for performing direct maintenance/adjustments to the Northwind Traders' database.</p>
     </div>
 
     <div class="row">
