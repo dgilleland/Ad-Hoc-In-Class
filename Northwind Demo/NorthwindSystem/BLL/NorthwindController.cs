@@ -17,9 +17,13 @@ namespace NorthwindSystem.BLL
         {
             // This "using" statement is different than the "using" at the top of this file.
             // This "using" statement is to ensure that the connection to the database is properly closed after we are done.
+            // The variable context is a NorthwindContext object
+            // The NorthwindContext class represents a "virtual" database
             using (NorthwindContext context = new NorthwindContext())
             {
+                // context.Products is a DbSet<Product>. It represents the Products table in the database
                 System.Data.Entity.DbSet<Product> stuff = context.Products;
+
                 List<Product> listedStuff = stuff.ToList();
                 return listedStuff;
                 //return context.Products.ToList();

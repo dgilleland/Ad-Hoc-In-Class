@@ -61,7 +61,6 @@ namespace NorthwindEntities
     /// </remarks>
     public class Supplier
     {
-        #region Auto-Implemented Properties
         public int SupplierID { get; set; }
         public string CompanyName { get; set; }
         public string ContactName { get; set; }
@@ -73,108 +72,7 @@ namespace NorthwindEntities
         public string Country { get; set; }
         public string Phone { get; set; }
         public string Fax { get; set; }
-        public string HomePage { get; set; }
-        #endregion
-
-        #region Calculated Properties
-        public string DisplayText
-        {
-            get
-            {
-                string temp = null;
-                if (!string.IsNullOrEmpty(HomePage))
-                {
-                    string[] Parts = HomePage.Split('#');
-                    if (Parts.Length >= 1)
-                    {
-                        temp = Parts[0];
-                    }
-                }
-                return temp;
-            }
-        }
-        public string WebAddress
-        {
-            get
-            {
-                string temp = null;
-                if (!string.IsNullOrEmpty(HomePage))
-                {
-                    string[] Parts = HomePage.Split('#');
-                    if (Parts.Length >= 2)
-                    {
-                        temp = Parts[1];
-                    }
-                }
-                return temp;
-            }
-        }
-        public string SubAddress
-        {
-            get
-            {
-                string temp = null;
-                if (!string.IsNullOrEmpty(HomePage))
-                {
-                    string[] Parts = HomePage.Split('#');
-                    if (Parts.Length >= 3)
-                    {
-                        temp = Parts[2];
-                    }
-                }
-                return temp;
-            }
-        }
-        public string ScreenTip
-        {
-            get
-            {
-                string temp = null;
-                if (!string.IsNullOrEmpty(HomePage))
-                {
-                    string[] Parts = HomePage.Split('#');
-                    if (Parts.Length == 4)
-                    {
-                        temp = Parts[3];
-                    }
-                }
-                return temp;
-            }
-        }
-        #endregion
-
-        /// <summary>
-        /// Initializes a new instance of the Supplier class.
-        /// </summary>
-        public Supplier(int supplierID,
-                        string companyName,
-                        string contactName,
-                        string contactTitle,
-                        string address,
-                        string city,
-                        string region,
-                        string postalCode,
-                        string country,
-                        string phone,
-                        string fax,
-                        string homePage)
-        {
-            SupplierID = supplierID;
-            CompanyName = companyName;
-            ContactName = contactName;
-            ContactTitle = contactTitle;
-            Address = address;
-            City = city;
-            Region = region;
-            PostalCode = postalCode;
-            Country = country;
-            Phone = phone;
-            Fax = fax;
-            HomePage = homePage;
-        }
-
-        public Supplier()
-        {
-        }
+        public string HomePageText { get; set; }
+        public string HomePageUrl { get; set; }
     }
 }
