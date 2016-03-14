@@ -1,4 +1,4 @@
-﻿using NorthwindEntities.Common;
+﻿//using NorthwindEntities.Common;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,61 +17,61 @@ namespace NorthwindEntities
         public string CategoryName { get; set; }
         public string Description { get; set; }
         private byte[] _Picture;
-        public byte[] Picture
-        {
-            get
-            {
-                return _Picture;
-            }
-            set
-            {
-                if (value != null)
-                    if (value.Length == 0)
-                        value = null;
-                    else
-                        value = ImageHelper.AddOleHeader(value);
-                _Picture = value;
-            }
-        }
+        public byte[] Picture{ get; set; }
+        //{
+        //    get
+        //    {
+        //        return _Picture;
+        //    }
+        //    set
+        //    {
+        //        //if (value != null)
+        //        //    if (value.Length == 0)
+        //        //        value = null;
+        //        //    else
+        //        //        value = ImageHelper.AddOleHeader(value);
+        //        _Picture = value;
+        //    }
+        //}
         #endregion
 
-        #region Extended ReadOnly Properties
-        private Image _PictureImage = null;
+        //#region Extended ReadOnly Properties
+        //private Image _PictureImage = null;
 
-        public Image PictureImage
-        {
-            get
-            {
-                if (_PictureImage == null)
-                    if (this.Picture != null)
-                    {
-                        // see Footnote 1
-                        MemoryStream stream = new MemoryStream(this.Picture, 78, this.Picture.Length - 78);
-                        _PictureImage = new Bitmap(stream);
-                    }
+        //public Image PictureImage
+        //{
+        //    get
+        //    {
+        //        if (_PictureImage == null)
+        //            if (this.Picture != null)
+        //            {
+        //                // see Footnote 1
+        //                MemoryStream stream = new MemoryStream(this.Picture, 78, this.Picture.Length - 78);
+        //                _PictureImage = new Bitmap(stream);
+        //            }
 
-                return _PictureImage;
-            }
-        }
-        #endregion
+        //        return _PictureImage;
+        //    }
+        //}
+        //#endregion
 
 
-        #region constructors
-        public Category()
-        {
+        //#region constructors
+        //public Category()
+        //{
 
-        }
-        public Category(int categoryid,
-                        string categoryname,
-                        string description,
-                        byte[] picture)
-        {
-            CategoryID = categoryid;
-            CategoryName = categoryname;
-            Description = description;
-            Picture = picture;
-        }
-        #endregion
+        //}
+        //public Category(int categoryid,
+        //                string categoryname,
+        //                string description,
+        //                byte[] picture)
+        //{
+        //    CategoryID = categoryid;
+        //    CategoryName = categoryname;
+        //    Description = description;
+        //    Picture = picture;
+        //}
+        //#endregion
     }
 }
 // Footnotes:
