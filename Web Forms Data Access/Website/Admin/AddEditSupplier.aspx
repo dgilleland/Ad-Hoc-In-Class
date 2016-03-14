@@ -16,7 +16,8 @@
                 <asp:DropDownList ID="SupplierDropDownList" runat="server" CssClass="form-control"></asp:DropDownList>
                 <asp:LinkButton ID="LookupSupplier" runat="server" CssClass="btn btn-primary" OnClick="LookupSupplier_Click" CausesValidation="false">Lookup Supplier</asp:LinkButton>
             </div>
-            <br /><br />
+            <br />
+            <br />
             <div>
                 <asp:LinkButton ID="AddSupplier" runat="server" CssClass="btn btn-default" OnClick="AddSupplier_Click">Add Supplier</asp:LinkButton>
                 <asp:LinkButton ID="UpdateSupplier" runat="server" CssClass="btn btn-default" OnClick="UpdateSupplier_Click">Update Supplier</asp:LinkButton>
@@ -84,19 +85,13 @@
                 <asp:Label ID="Label12" runat="server" Text="Fax" AssociatedControlID="FAx"></asp:Label>
                 <asp:TextBox ID="Fax" runat="server"></asp:TextBox>
 
-                <asp:Label ID="Label13" runat="server" Text="Home Page" AssociatedControlID="HomePageDetails"></asp:Label>
-                <div id="HomePageDetails" runat="server" class="col-sm-offset-4">
-                    <asp:HyperLink ID="HomePage" runat="server" Text="Link to homepage" />
-                    <br />
-                    <asp:TextBox ID="DisplayText" runat="server" Width="250px" CssClass="form-control"
-                        ToolTip="The Display Text is the title of the home page as it appears in the browser's tab."></asp:TextBox>
-                    <br />
-                    <asp:TextBox ID="WebAddress" runat="server" Width="250px" CssClass="form-control"
-                        ToolTip="The Web Address is any valid URL or URI (e.g.: www.Microsoft.com/accessdev/sampleapps/mayumi.htm)"></asp:TextBox>
-                    <br />
-                    <asp:TextBox ID="SubAddress" runat="server" Width="250px" CssClass="form-control"
-                        ToolTip="The Sub Address is a location within the web address, such as an anchor tag (E.g.: Section2)"></asp:TextBox>
-                </div>
+                <asp:Label ID="Label13" runat="server" Text="Home Page Text" AssociatedControlID="HomePageText"></asp:Label>
+                <asp:TextBox ID="HomePageText" runat="server" Width="250px" CssClass="form-control"
+                    ToolTip="The Display Text is the title of the home page as it appears in the browser's tab."></asp:TextBox>
+
+                <asp:Label ID="Label14" runat="server" Text="Home Page" AssociatedControlID="WebAddress"></asp:Label>
+                <asp:TextBox ID="WebAddress" runat="server" Width="250px" CssClass="form-control"
+                    ToolTip="The Web Address is any valid URL" TextMode="Url"></asp:TextBox>
             </fieldset>
         </div>
     </div>

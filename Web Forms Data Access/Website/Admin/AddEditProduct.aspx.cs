@@ -22,6 +22,8 @@ public partial class Admin_AddEditProduct : System.Web.UI.Page
             catch (Exception ex)
             {
                 MessageLabel.Text = ex.Message;
+                MessagePanel.CssClass = "alert alert-danger alert-dismissible";
+                MessagePanel.Visible = true;
             }
         }
     } // end of Page_Load
@@ -94,6 +96,8 @@ public partial class Admin_AddEditProduct : System.Web.UI.Page
             catch (Exception ex)
             {
                 MessageLabel.Text = ex.Message;
+                MessagePanel.CssClass = "alert alert-danger alert-dismissible";
+                MessagePanel.Visible = true;
             }
         }
     }
@@ -133,6 +137,8 @@ public partial class Admin_AddEditProduct : System.Web.UI.Page
             catch (Exception ex)
             {
                 this.MessageLabel.Text = ex.Message;
+                MessagePanel.CssClass = "alert alert-danger alert-dismissible";
+                MessagePanel.Visible = true;
             }
     }
 
@@ -182,6 +188,8 @@ public partial class Admin_AddEditProduct : System.Web.UI.Page
                 catch (Exception ex)
                 {
                     this.MessageLabel.Text = ex.Message;
+                    MessagePanel.CssClass = "alert alert-danger alert-dismissible";
+                    MessagePanel.Visible = true;
                 }
             }
             else
@@ -214,6 +222,8 @@ public partial class Admin_AddEditProduct : System.Web.UI.Page
             catch (Exception ex)
             {
                 this.MessageLabel.Text = ex.Message;
+                MessagePanel.CssClass = "alert alert-danger alert-dismissible";
+                MessagePanel.Visible = true;
             }
         }
         else

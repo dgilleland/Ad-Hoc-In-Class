@@ -25,6 +25,8 @@ public partial class Admin_AddEditCategory : System.Web.UI.Page
             catch (Exception ex)
             {
                 MessageLabel.Text = ex.Message;
+                MessagePanel.CssClass = "alert alert-danger alert-dismissible";
+                MessagePanel.Visible = true;
             }
         }
     }
@@ -76,10 +78,8 @@ public partial class Admin_AddEditCategory : System.Web.UI.Page
 
                     if (aCategory.Picture != null)
                     {
-                        byte[] picture = new byte[aCategory.Picture.Length - 78];
-                        Array.Copy(aCategory.Picture, 78, picture, 0, picture.Length);
-                        string base64String = Convert.ToBase64String(picture);
-                        Picture.ImageUrl = "data:image/png;base64," + base64String;
+                        string base64String = Convert.ToBase64String(aCategory.Picture);
+                        Picture.ImageUrl = string.Format("data:{0};base64,{1}", aCategory.PictureMimeType, base64String);
                     }
                     else
                         Picture.ImageUrl = "~/Images/NoImage_172x120.gif";
@@ -110,6 +110,7 @@ public partial class Admin_AddEditCategory : System.Web.UI.Page
             if (!string.IsNullOrEmpty(Description.Text))
                 item.Description = Description.Text;
             item.Picture = GetUploadedPicture();
+            item.PictureMimeType = GetMimeType();
 
             CategoryController controller = new CategoryController();
             int addedCategoryID = controller.AddCategory(item);
@@ -127,19 +128,30 @@ public partial class Admin_AddEditCategory : System.Web.UI.Page
         catch (Exception ex)
         {
             this.MessageLabel.Text = ex.Message;
+            MessagePanel.CssClass = "alert alert-danger alert-dismissible";
+            MessagePanel.Visible = true;
         }
+    }
+    private string GetMimeType()
+    {
+        if (this.CategoryImageUpload.HasFile && this.CategoryImageUpload.PostedFile != null)
+        {
+            string extention = Path.GetExtension(CategoryImageUpload.PostedFile.FileName).ToLower();
+            string MIMEType = "image/" + extention.Replace(".", "");
+            return MIMEType;
+        }
+        else
+            return null;
     }
     private byte[] GetUploadedPicture()
     {
         byte[] thePicture = null;
         if (this.CategoryImageUpload.HasFile && this.CategoryImageUpload.PostedFile != null)
         {
-            string extention = Path.GetExtension(CategoryImageUpload.PostedFile.FileName).ToLower();
-            string MIMEType = "image/" + extention.Replace(".", "");
-            if (WebClient.UI.Handlers.AbstractStreamableImage.ImageFormats.ContainsValue(MIMEType))
+            if (WebClient.UI.Handlers.SupportedImageFormats.ImageFormats.ContainsValue(GetMimeType()))
             {
                 long size = this.CategoryImageUpload.PostedFile.InputStream.Length;
-                if (size < int.MaxValue - 78) // minus 78 is to allow for the OLE header
+                if (size < int.MaxValue)
                 {
                     byte[] ImageBytes = new byte[size];
                     this.CategoryImageUpload.PostedFile.InputStream.Read(ImageBytes, 0, (int)size);
@@ -167,6 +179,7 @@ public partial class Admin_AddEditCategory : System.Web.UI.Page
                 try
                 {
                     byte[] uploadedPicture = GetUploadedPicture();
+                    string mimeType = GetMimeType();
                     if (uploadedPicture != null && DeletePicture.Checked)
                     {
                         MessageLabel.Text = "Unclear input.<br />"
@@ -179,11 +192,14 @@ public partial class Admin_AddEditCategory : System.Web.UI.Page
                         if (DeletePicture.Checked)
                         {
                             uploadedPicture = null;
+                            mimeType = null;
                         }
                         else if (uploadedPicture == null)
                         {
                             // default to the existing picture
-                            uploadedPicture = controller.LookupCategory(theCategoryId).Picture;
+                            Category existing = controller.LookupCategory(theCategoryId);
+                            uploadedPicture = existing.Picture;
+                            mimeType = existing.PictureMimeType;
                         }
 
                         // 2) Create the Category object
@@ -193,6 +209,7 @@ public partial class Admin_AddEditCategory : System.Web.UI.Page
                         if (!string.IsNullOrEmpty(Description.Text))
                             item.Description = Description.Text;
                         item.Picture = uploadedPicture;
+                        item.PictureMimeType = mimeType;
 
                         // 3) Update the database
                         int rowsAffected = controller.UpdateCategory(item);
@@ -202,8 +219,10 @@ public partial class Admin_AddEditCategory : System.Web.UI.Page
                             PopulateCategoryDropdown();
                             this.CurrentCategories.SelectedValue = item.CategoryID.ToString();
                             if (item.Picture != null)
-                                Picture.ImageUrl = "~/Handlers/ImageHandler.ashx?CategoryID="
-                                                 + item.CategoryID.ToString();
+                            {
+                                string base64String = Convert.ToBase64String(item.Picture);
+                                Picture.ImageUrl = string.Format("data:{0};base64,{1}", item.PictureMimeType, base64String);
+                            }
                             else
                                 Picture.ImageUrl = "~/Images/NoImage_172x120.gif";
                             MessageLabel.Text = "Category was updated.";
@@ -217,6 +236,8 @@ public partial class Admin_AddEditCategory : System.Web.UI.Page
                 catch (Exception ex)
                 {
                     MessageLabel.Text = ex.Message;
+                    MessagePanel.CssClass = "alert alert-danger alert-dismissible";
+                    MessagePanel.Visible = true;
                 }
             }
             else
@@ -252,6 +273,8 @@ public partial class Admin_AddEditCategory : System.Web.UI.Page
             catch (Exception ex)
             {
                 MessageLabel.Text = ex.Message;
+                MessagePanel.CssClass = "alert alert-danger alert-dismissible";
+                MessagePanel.Visible = true;
             }
         }
         else

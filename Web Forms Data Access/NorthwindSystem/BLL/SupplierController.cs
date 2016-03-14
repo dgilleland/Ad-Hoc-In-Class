@@ -12,7 +12,8 @@ namespace NorthwindSystem.BLL
         {
             using (var context = new NorthwindContext())
             {
-                return context.Suppliers.ToList();
+                var allSuppliers = context.Suppliers;
+                return allSuppliers.ToList();
             }
         }
         public Supplier LookupSupplier(int Supplierid)
