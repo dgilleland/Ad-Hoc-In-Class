@@ -54,7 +54,7 @@
                         Text="Check to delete picture" />
 
                 <asp:Label ID="Label8" runat="server" Text="Image to Upload" AssociatedControlID="CategoryImageUpload"></asp:Label>
-                <asp:FileUpload ID="CategoryImageUpload" runat="server" />
+                <asp:FileUpload ID="CategoryImageUpload" runat="server" accept='image/*' />
             </fieldset>
         </div>
     </div>

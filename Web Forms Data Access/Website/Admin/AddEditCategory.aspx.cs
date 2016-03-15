@@ -109,64 +109,30 @@ public partial class Admin_AddEditCategory : System.Web.UI.Page
             item.CategoryName = CategoryName.Text;
             if (!string.IsNullOrEmpty(Description.Text))
                 item.Description = Description.Text;
-            item.Picture = GetUploadedPicture();
-            item.PictureMimeType = GetMimeType();
+            item.Picture = ImageUploadHelpers.GetUploadedPicture(CategoryImageUpload);
+            item.PictureMimeType = ImageUploadHelpers.GetMimeType(CategoryImageUpload);
 
             CategoryController controller = new CategoryController();
             int addedCategoryID = controller.AddCategory(item);
             // Update the form and give feedback to the user
             PopulateCategoryDropdown();
-            this.CurrentCategories.SelectedValue = addedCategoryID.ToString();
+            CurrentCategories.SelectedValue = addedCategoryID.ToString();
             CategoryID.Text = addedCategoryID.ToString();
             if (item.Picture != null)
-                Picture.ImageUrl = "~/Handlers/ImageHandler.ashx?CategoryID="
-                                 + addedCategoryID.ToString();
+            {
+                string base64String = Convert.ToBase64String(item.Picture);
+                Picture.ImageUrl = string.Format("data:{0};base64,{1}", item.PictureMimeType, base64String);
+            }
             else
                 Picture.ImageUrl = "~/Images/NoImage_172x120.gif";
-            this.MessageLabel.Text = "New category added";
+            MessageLabel.Text = "New category added";
         }
         catch (Exception ex)
         {
-            this.MessageLabel.Text = ex.Message;
+            MessageLabel.Text = ex.Message;
             MessagePanel.CssClass = "alert alert-danger alert-dismissible";
             MessagePanel.Visible = true;
         }
-    }
-    private string GetMimeType()
-    {
-        if (this.CategoryImageUpload.HasFile && this.CategoryImageUpload.PostedFile != null)
-        {
-            string extention = Path.GetExtension(CategoryImageUpload.PostedFile.FileName).ToLower();
-            string MIMEType = "image/" + extention.Replace(".", "");
-            return MIMEType;
-        }
-        else
-            return null;
-    }
-    private byte[] GetUploadedPicture()
-    {
-        byte[] thePicture = null;
-        if (this.CategoryImageUpload.HasFile && this.CategoryImageUpload.PostedFile != null)
-        {
-            if (WebClient.UI.Handlers.SupportedImageFormats.ImageFormats.ContainsValue(GetMimeType()))
-            {
-                long size = this.CategoryImageUpload.PostedFile.InputStream.Length;
-                if (size < int.MaxValue)
-                {
-                    byte[] ImageBytes = new byte[size];
-                    this.CategoryImageUpload.PostedFile.InputStream.Read(ImageBytes, 0, (int)size);
-                    thePicture = ImageBytes;
-                }
-                else
-                    throw new Exception("Image is too big. Images must be smaller than " +
-                        int.MaxValue.ToString() + " btyes in size.");
-            }
-            else
-            {
-                throw new Exception("Invalid file type uploaded - only picture files are allowed.");
-            }
-        }
-        return thePicture;
     }
 
 
@@ -178,8 +144,8 @@ public partial class Admin_AddEditCategory : System.Web.UI.Page
             {
                 try
                 {
-                    byte[] uploadedPicture = GetUploadedPicture();
-                    string mimeType = GetMimeType();
+                    byte[] uploadedPicture = ImageUploadHelpers.GetUploadedPicture(CategoryImageUpload);
+                    string mimeType = ImageUploadHelpers.GetMimeType(CategoryImageUpload);
                     if (uploadedPicture != null && DeletePicture.Checked)
                     {
                         MessageLabel.Text = "Unclear input.<br />"
@@ -217,7 +183,7 @@ public partial class Admin_AddEditCategory : System.Web.UI.Page
                         if (rowsAffected > 0)
                         {
                             PopulateCategoryDropdown();
-                            this.CurrentCategories.SelectedValue = item.CategoryID.ToString();
+                            CurrentCategories.SelectedValue = item.CategoryID.ToString();
                             if (item.Picture != null)
                             {
                                 string base64String = Convert.ToBase64String(item.Picture);
@@ -229,7 +195,7 @@ public partial class Admin_AddEditCategory : System.Web.UI.Page
                         }
                         else
                         {
-                            this.MessageLabel.Text = "Update failed. Zero rows affected.";
+                            MessageLabel.Text = "Update failed. Zero rows affected.";
                         }
                     }
                 }
@@ -267,7 +233,7 @@ public partial class Admin_AddEditCategory : System.Web.UI.Page
                 }
                 else
                 {
-                    this.MessageLabel.Text = "Delete failed. Zero rows affected.";
+                    MessageLabel.Text = "Delete failed. Zero rows affected.";
                 }
             }
             catch (Exception ex)
