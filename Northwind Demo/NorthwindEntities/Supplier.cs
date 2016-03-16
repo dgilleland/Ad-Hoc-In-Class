@@ -72,7 +72,7 @@ namespace NorthwindEntities
         public string Country { get; set; }
         public string Phone { get; set; }
         public string Fax { get; set; }
-        public string HomePageText { get; set; }
+        public string HomePageTitle { get; set; }
         public string HomePageUrl { get; set; }
     }
 }

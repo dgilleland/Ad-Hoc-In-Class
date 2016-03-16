@@ -12,7 +12,7 @@
                         <div class="form-group">
                             <asp:Label ID="Label1" runat="server" CssClass="control-label" Text="Products" AssociatedControlID="CurrentProducts"></asp:Label>
                             <asp:DropDownList ID="CurrentProducts" runat="server" CssClass="form-control"></asp:DropDownList>
-                            <asp:LinkButton ID="ShowProductDetails" runat="server" CssClass="btn btn-primary" CausesValidation="false">Show Product Details</asp:LinkButton>
+                            <asp:LinkButton ID="ShowProductDetails" runat="server" CssClass="btn btn-primary" CausesValidation="false" OnClick="ShowProductDetails_Click">Show Product Details</asp:LinkButton>
                         </div>
                     </div>
                 </div>

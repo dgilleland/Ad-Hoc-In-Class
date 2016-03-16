@@ -29,5 +29,21 @@ namespace NorthwindSystem.BLL
                 //return context.Products.ToList();
             }
         }
+
+        public Product GetProduct(int productId)
+        {
+            using (NorthwindContext context = new NorthwindContext())
+            {
+                return context.Products.Find(productId);
+            }
+        }
+
+        public List<Supplier> ListAllSuppliers()
+        {
+            using (NorthwindContext context = new NorthwindContext())
+            {
+                return context.Suppliers.ToList();
+            }
+        }
     }
 }
