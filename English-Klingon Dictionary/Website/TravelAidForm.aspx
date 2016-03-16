@@ -1,11 +1,15 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="TravelAid.aspx.cs" Inherits="TravelAid" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="TravelAidForm.aspx.cs" Inherits="TravelAidForm" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <div class="page-header">
         <h1>English-Klingon Travel Aid</h1>
     </div>
     <div class="row col-md-12">
-        <blockquote>More info here....</blockquote>
+        <p>
+            <asp:ValidationSummary ID="ValidationSummary" runat="server" HeaderText="Please correct these errors before clicking [Add Phrase]." />
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="English" ErrorMessage="English Phrase is required"></asp:RequiredFieldValidator>
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="Klingon" ErrorMessage="Klingon Translation is required"></asp:RequiredFieldValidator>
+        </p>
     </div>
     <div class="row">
         <div class="col-md-6">
