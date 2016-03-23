@@ -32,7 +32,7 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
                     inner = inner.InnerException;
                 if (inner != ex)
                     MessageLabel.Text += "<blockquote>" + inner.Message + "</blockquote>";
-                MessagePanel.CssClass = "alert alert-danger alert-dismissable";
+                MessagePanel.CssClass = "alert alert-danger alert-dismissible";
                 MessagePanel.Visible = true;
             }
         }
@@ -47,7 +47,7 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
         Category.DataValueField = "CategoryID";
         Category.DataBind();
         // Let's insert a couple of options at the top of the drop-down
-        Category.Items.Insert(0, new ListItem("[select a category]", "-1"));
+        Category.Items.Insert(0, new ListItem("[select a category]"));
         Category.Items.Insert(1, new ListItem("[no category]", "")); // because Product.CategoryID is nullable
     }
 
@@ -60,7 +60,7 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
         Supplier.DataValueField = "SupplierID";
         Supplier.DataBind();
         // Let's insert a couple of options at the top of the drop-down
-        Supplier.Items.Insert(0, new ListItem("[select a supplier]", "-1"));
+        Supplier.Items.Insert(0, new ListItem("[select a supplier]"));
         Supplier.Items.Insert(1, new ListItem("[no supplier]", "")); // because Product.SupplierID is nullable
     }
 
@@ -113,7 +113,7 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
                 Discontinued.Checked = foundProduct.Discontinued;
 
                 MessageLabel.Text = "Product details found";
-                MessagePanel.CssClass = "alert alert-success alert-dismissable";
+                MessagePanel.CssClass = "alert alert-success alert-dismissible";
                 MessagePanel.Visible = true;
             }
             catch (Exception ex)
@@ -123,5 +123,104 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
                 MessagePanel.Visible = true;
             }
         }
+    }
+    protected void ClearForm_Click(object sender, EventArgs e)
+    {
+        // Reset all the controls on the form
+        CurrentProducts.SelectedIndex = 0;
+        Supplier.SelectedIndex = 0;
+        Category.SelectedIndex = 0;
+        ProductID.Text = "";
+        ProductName.Text = "";
+        QtyPerUnit.Text = "";
+        UnitPrice.Text = "";
+        InStock.Text = "";
+        OnOrder.Text = "";
+        ReorderLevel.Text = "";
+        Discontinued.Checked = false;
+    }
+
+    protected void AddProduct_Click(object sender, EventArgs e)
+    {
+        // TODO: Do any validation
+        try
+        {
+            // Create a Product object and fill it with the data from the form
+            Product item = GetProductFromUser();
+
+            // Send the Product object to the BLL
+            NorthwindController controller = new NorthwindController();
+            int newItemId = controller.AddProduct(item); // my bad ;)
+
+            // Give the user some feedback
+            PopulateProductsDropDown(); // because we have a new product for the list
+            CurrentProducts.SelectedValue = newItemId.ToString();
+            ProductID.Text = newItemId.ToString();
+
+            MessageLabel.Text = "Product added";
+            MessagePanel.CssClass = "alert alert-success alert-dismissable";
+            MessagePanel.Visible = true;
+
+        }
+        catch (Exception ex)
+        {
+                MessageLabel.Text = ex.Message;
+                MessagePanel.CssClass = "alert alert-danger alert-dismissable";
+                MessagePanel.Visible = true;
+        }
+    }
+
+    private Product GetProductFromUser()
+    {
+        Product item = new Product();
+        item.ProductName = ProductName.Text;
+        // Nullable supplier/category from the DropDownList controls
+        int temp;
+        if (int.TryParse(Supplier.SelectedValue, out temp)) // If I can convert the SelectedValue to an int...
+            item.SupplierID = temp;
+        if (int.TryParse(Category.SelectedValue, out temp))
+            item.CategoryID = temp;
+        // Nullable quantity per unit from a TextBox
+        // - a couple of things to note: It's not quite sufficient to just see if the text is null or empty.
+        //   It's possible that the user entered in only spaces, and we want to strip out leading and trailing
+        //   spaces from their input.
+        if (!string.IsNullOrWhiteSpace(QtyPerUnit.Text))
+            item.QuantityPerUnit = QtyPerUnit.Text.Trim(); // remove leading/trailing white space
+
+        // Get the unit price
+        decimal money;
+        if (decimal.TryParse(UnitPrice.Text, out money))
+            item.UnitPrice = money;
+
+        // Get the instock/onorder/reorder values
+        short smallNumber;
+        if (short.TryParse(InStock.Text, out smallNumber))
+            item.UnitsInStock = smallNumber;
+        if (short.TryParse(OnOrder.Text, out smallNumber))
+            item.UnitsOnOrder = smallNumber;
+        if (short.TryParse(ReorderLevel.Text, out smallNumber))
+            item.ReorderLevel = smallNumber;
+
+        // Discontinued is a simple true/false (not nullable)
+        item.Discontinued = Discontinued.Checked;
+        return item;
+    }
+
+    protected void UpdateProduct_Click(object sender, EventArgs e)
+    {
+        // TODO: Do any validation
+        int id;
+        if (int.TryParse(ProductID.Text, out id))
+        {
+            // Create a Product object and fill it with the data from the form
+
+            // Send the Product object to the BLL
+            // Give the user some feedback
+        }
+    }
+
+    protected void DeleteProduct_Click(object sender, EventArgs e)
+    {
+
     }
 }

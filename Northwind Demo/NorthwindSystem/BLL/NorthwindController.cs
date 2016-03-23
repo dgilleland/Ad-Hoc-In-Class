@@ -53,5 +53,32 @@ namespace NorthwindSystem.BLL
                 return context.Categories.ToList();
             }
         }
+
+        public int AddProduct(Product item)
+        {
+            using (NorthwindContext dbContext = new NorthwindContext())
+            {
+                Product newItem = dbContext.Products.Add(item);
+                dbContext.SaveChanges();
+                return newItem.ProductID;
+            }
+        }
+
+        public void UpdateProduct(Product item)
+        {
+            using (NorthwindContext dbContext = new NorthwindContext())
+            {
+                // The following approach will update the entire Product object
+                // in the database.
+
+                // Attach sets up a Product object that should match the
+                // one we will need to update on the database
+                var existing = dbContext.Entry(item);
+                // Tell the dbContext that this object's data is modified
+                existing.State = System.Data.Entity.EntityState.Modified;
+                // Save the changes
+                dbContext.SaveChanges();
+            }
+        }
     }
 }

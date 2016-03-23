@@ -17,10 +17,10 @@
                     </div>
                 </div>
                 <div class="col-sm-6 text-center">
-                    <asp:LinkButton ID="AddProduct" runat="server" CssClass="btn btn-default">Add Product</asp:LinkButton>
-                    <asp:LinkButton ID="UpdateProduct" runat="server" CssClass="btn btn-default">Update Product</asp:LinkButton>
-                    <asp:LinkButton ID="DeleteProduct" runat="server" CssClass="btn btn-default">Delete Product</asp:LinkButton>
-                    <asp:LinkButton ID="ClearForm" runat="server" CssClass="btn btn-default">Clear Form</asp:LinkButton>
+                    <asp:LinkButton ID="AddProduct" runat="server" CssClass="btn btn-default" OnClick="AddProduct_Click">Add Product</asp:LinkButton>
+                    <asp:LinkButton ID="UpdateProduct" runat="server" CssClass="btn btn-default" OnClick="UpdateProduct_Click">Update Product</asp:LinkButton>
+                    <asp:LinkButton ID="DeleteProduct" runat="server" CssClass="btn btn-default" OnClick="DeleteProduct_Click">Delete Product</asp:LinkButton>
+                    <asp:LinkButton ID="ClearForm" runat="server" CssClass="btn btn-default" OnClick="ClearForm_Click">Clear Form</asp:LinkButton>
                 </div>
             </div>
         </div>
