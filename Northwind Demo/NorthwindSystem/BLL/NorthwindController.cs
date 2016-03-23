@@ -45,5 +45,13 @@ namespace NorthwindSystem.BLL
                 return context.Suppliers.ToList();
             }
         }
+
+        public List<Category> ListAllCategories()
+        {
+            using (NorthwindContext context = new NorthwindContext())
+            {
+                return context.Categories.ToList();
+            }
+        }
     }
 }

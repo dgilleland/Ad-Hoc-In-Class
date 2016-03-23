@@ -20,6 +20,7 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
             {
                 PopulateProductsDropDown();
                 PopulateSupplierDropDown();
+                PopulateCategoryDropDown();
             }
             catch (Exception ex)
             {
@@ -35,6 +36,19 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
                 MessagePanel.Visible = true;
             }
         }
+    }
+
+    private void PopulateCategoryDropDown()
+    {
+        NorthwindController controller = new NorthwindController();
+        List<Category> categories = controller.ListAllCategories();
+        Category.DataSource = categories;
+        Category.DataTextField = "CategoryName";
+        Category.DataValueField = "CategoryID";
+        Category.DataBind();
+        // Let's insert a couple of options at the top of the drop-down
+        Category.Items.Insert(0, new ListItem("[select a category]", "-1"));
+        Category.Items.Insert(1, new ListItem("[no category]", "")); // because Product.CategoryID is nullable
     }
 
     private void PopulateSupplierDropDown()
