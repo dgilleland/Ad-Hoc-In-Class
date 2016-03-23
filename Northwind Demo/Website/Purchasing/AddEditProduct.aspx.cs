@@ -91,13 +91,37 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
         }
         else
         {
-            searchId = int.Parse(CurrentProducts.SelectedValue);
-            NorthwindController controller = new NorthwindController();
-            Product foundProduct = controller.GetProduct(searchId);
+            try
+            {
+                searchId = int.Parse(CurrentProducts.SelectedValue);
+                NorthwindController controller = new NorthwindController();
+                Product foundProduct = controller.GetProduct(searchId);
 
-            // Unpacking the found product into the form
-            ProductID.Text = foundProduct.ProductID.ToString();
-            ProductName.Text = foundProduct.ProductName;
+                // Unpacking the found product into the form
+                ProductID.Text = foundProduct.ProductID.ToString();
+                ProductName.Text = foundProduct.ProductName;
+                // Select the supplier/category for the found product
+                Supplier.SelectedValue = foundProduct.SupplierID.ToString();
+                Category.SelectedValue = foundProduct.CategoryID.ToString();
+                // Other values that are displayed in text boxes
+                QtyPerUnit.Text = foundProduct.QuantityPerUnit;
+                UnitPrice.Text = foundProduct.UnitPrice.ToString();
+                InStock.Text = foundProduct.UnitsInStock.ToString();
+                OnOrder.Text = foundProduct.UnitsOnOrder.ToString();
+                ReorderLevel.Text = foundProduct.ReorderLevel.ToString();
+                // Set the checkbox for the found product's Discontinued flag
+                Discontinued.Checked = foundProduct.Discontinued;
+
+                MessageLabel.Text = "Product details found";
+                MessagePanel.CssClass = "alert alert-success alert-dismissable";
+                MessagePanel.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                MessageLabel.Text = ex.Message;
+                MessagePanel.CssClass = "alert alert-danger alert-dismissible";
+                MessagePanel.Visible = true;
+            }
         }
     }
 }
