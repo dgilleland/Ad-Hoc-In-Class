@@ -124,6 +124,7 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
             }
         }
     }
+    
     protected void ClearForm_Click(object sender, EventArgs e)
     {
         // Reset all the controls on the form
@@ -210,12 +211,39 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
     {
         // TODO: Do any validation
         int id;
-        if (int.TryParse(ProductID.Text, out id))
+        if (int.TryParse(ProductID.Text, out id)) // If there is a Product ID
         {
-            // Create a Product object and fill it with the data from the form
+            try
+            {
+                // Create a Product object and fill it with the data from the form
+                Product item = GetProductFromUser(); // Everything but the ProductId
+                item.ProductID = id; // The id from when they did the Lookup
 
-            // Send the Product object to the BLL
-            // Give the user some feedback
+                // Send the Product object to the BLL
+                NorthwindController controller = new NorthwindController();
+                controller.UpdateProduct(item);
+
+                // Give the user some feedback
+                PopulateProductsDropDown();
+                CurrentProducts.SelectedValue = id.ToString();
+                MessageLabel.Text = item.ProductName + " was successfully updated";
+                MessagePanel.CssClass = "alert alert-success alert-dismissible";
+                MessagePanel.Visible = true;
+
+            }
+            catch (Exception ex)
+            {
+                MessageLabel.Text = "Error: " + ex.Message;
+                MessagePanel.CssClass = "alert alert-danger alert-dismissible";
+                MessagePanel.Visible = true;
+            }
+        }
+        else
+        {
+            MessageLabel.Text = "Please lookup a product before clicking the Update button.";
+            MessagePanel.CssClass = "alert alert-info alert-dismissible";
+            MessagePanel.Visible = true;
+
         }
     }
 
