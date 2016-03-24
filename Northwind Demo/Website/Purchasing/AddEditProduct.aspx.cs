@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 
 public partial class Purchasing_AddEditProduct : System.Web.UI.Page
 {
+    #region Page Load event handler
     protected void Page_Load(object sender, EventArgs e)
     {
         MessagePanel.Visible = false; // Hide the panel to start with each time
@@ -24,20 +25,151 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
             }
             catch (Exception ex)
             {
-                MessageLabel.Text = "ERROR: " + ex.Message;
-                // get the inner exception....
-                Exception inner = ex;
-                // this next statement drills down on the details of the exception
-                while (inner.InnerException != null)
-                    inner = inner.InnerException;
-                if (inner != ex)
-                    MessageLabel.Text += "<blockquote>" + inner.Message + "</blockquote>";
-                MessagePanel.CssClass = "alert alert-danger alert-dismissible";
-                MessagePanel.Visible = true;
+                ShowFullExceptionMessage(ex);
             }
         }
     }
+    #endregion
 
+    #region Button click event handlers
+    protected void ShowProductDetails_Click(object sender, EventArgs e)
+    {
+        int searchId;
+        if(CurrentProducts.SelectedIndex == 0)
+        {
+            ShowMessage("Please select a product from the dropdown before clicking [Show Product Details]", "info");
+        }
+        else
+        {
+            try
+            {
+                searchId = int.Parse(CurrentProducts.SelectedValue);
+                NorthwindController controller = new NorthwindController();
+                Product foundProduct = controller.GetProduct(searchId);
+
+                // Unpacking the found product into the form
+                ProductID.Text = foundProduct.ProductID.ToString();
+                ProductName.Text = foundProduct.ProductName;
+                // Select the supplier/category for the found product
+                Supplier.SelectedValue = foundProduct.SupplierID.ToString();
+                Category.SelectedValue = foundProduct.CategoryID.ToString();
+                // Other values that are displayed in text boxes
+                QtyPerUnit.Text = foundProduct.QuantityPerUnit;
+                UnitPrice.Text = foundProduct.UnitPrice.ToString();
+                InStock.Text = foundProduct.UnitsInStock.ToString();
+                OnOrder.Text = foundProduct.UnitsOnOrder.ToString();
+                ReorderLevel.Text = foundProduct.ReorderLevel.ToString();
+                // Set the checkbox for the found product's Discontinued flag
+                Discontinued.Checked = foundProduct.Discontinued;
+
+                ShowMessage("Product details found", "success");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage(ex.Message, "danger");
+            }
+        }
+    }
+    
+    protected void ClearForm_Click(object sender, EventArgs e)
+    {
+        // Reset all the controls on the form
+        CurrentProducts.SelectedIndex = 0;
+        Supplier.SelectedIndex = 0;
+        Category.SelectedIndex = 0;
+        ProductID.Text = "";
+        ProductName.Text = "";
+        QtyPerUnit.Text = "";
+        UnitPrice.Text = "";
+        InStock.Text = "";
+        OnOrder.Text = "";
+        ReorderLevel.Text = "";
+        Discontinued.Checked = false;
+    }
+
+    protected void AddProduct_Click(object sender, EventArgs e)
+    {
+        // TODO: Do any validation
+        try
+        {
+            // Create a Product object and fill it with the data from the form
+            Product item = GetProductFromUser();
+
+            // Send the Product object to the BLL
+            NorthwindController controller = new NorthwindController();
+            int newItemId = controller.AddProduct(item); // my bad ;)
+
+            // Give the user some feedback
+            PopulateProductsDropDown(); // because we have a new product for the list
+            CurrentProducts.SelectedValue = newItemId.ToString();
+            ProductID.Text = newItemId.ToString();
+
+            ShowMessage("Product added","success");
+        }
+        catch (Exception ex)
+        {
+            ShowMessage(ex.Message, "danger");
+        }
+    }
+
+    protected void UpdateProduct_Click(object sender, EventArgs e)
+    {
+        // TODO: Do any validation
+        int id;
+        if (int.TryParse(ProductID.Text, out id)) // If there is a Product ID
+        {
+            try
+            {
+                // Create a Product object and fill it with the data from the form
+                Product item = GetProductFromUser(); // Everything but the ProductId
+                item.ProductID = id; // The id from when they did the Lookup
+
+                // Send the Product object to the BLL
+                NorthwindController controller = new NorthwindController();
+                controller.UpdateProduct(item);
+
+                // Give the user some feedback
+                PopulateProductsDropDown();
+                CurrentProducts.SelectedValue = id.ToString();
+                ShowMessage(item.ProductName + " was successfully updated", "success");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage("Error: " + ex.Message, "danger");
+            }
+        }
+        else
+            ShowMessage("Please lookup a product before clicking the Update button.", "info");
+    }
+
+    protected void DeleteProduct_Click(object sender, EventArgs e)
+    {
+        int id;
+        if (int.TryParse(ProductID.Text, out id)) // If there is a Product ID
+        {
+            try
+            {
+                // Send the Product object to the BLL
+                NorthwindController controller = new NorthwindController();
+                controller.DeleteProduct(id);
+
+                // Give the user some feedback
+                PopulateProductsDropDown();
+                CurrentProducts.SelectedIndex = 0;
+                ShowMessage("Product was successfully removed", "success");
+                ClearForm_Click(sender, e); // just call the ClearForm click method to clean up
+            }
+            catch (Exception ex)
+            {
+                ShowFullExceptionMessage(ex);
+            }
+        }
+        else
+            ShowMessage("Please lookup a product before clicking the Delete button.", "info");
+    }
+    #endregion
+
+    #region Private methods
     private void PopulateCategoryDropDown()
     {
         NorthwindController controller = new NorthwindController();
@@ -80,97 +212,6 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
         CurrentProducts.Items.Insert(0, "[select a product]");
     }
 
-    protected void ShowProductDetails_Click(object sender, EventArgs e)
-    {
-        int searchId;
-        if(CurrentProducts.SelectedIndex == 0)
-        {
-            MessageLabel.Text = "Please select a product from the dropdown before clicking [Show Product Details]";
-            MessagePanel.Visible = true;
-            MessagePanel.CssClass = "alert alert-info alert-dismissible";
-        }
-        else
-        {
-            try
-            {
-                searchId = int.Parse(CurrentProducts.SelectedValue);
-                NorthwindController controller = new NorthwindController();
-                Product foundProduct = controller.GetProduct(searchId);
-
-                // Unpacking the found product into the form
-                ProductID.Text = foundProduct.ProductID.ToString();
-                ProductName.Text = foundProduct.ProductName;
-                // Select the supplier/category for the found product
-                Supplier.SelectedValue = foundProduct.SupplierID.ToString();
-                Category.SelectedValue = foundProduct.CategoryID.ToString();
-                // Other values that are displayed in text boxes
-                QtyPerUnit.Text = foundProduct.QuantityPerUnit;
-                UnitPrice.Text = foundProduct.UnitPrice.ToString();
-                InStock.Text = foundProduct.UnitsInStock.ToString();
-                OnOrder.Text = foundProduct.UnitsOnOrder.ToString();
-                ReorderLevel.Text = foundProduct.ReorderLevel.ToString();
-                // Set the checkbox for the found product's Discontinued flag
-                Discontinued.Checked = foundProduct.Discontinued;
-
-                MessageLabel.Text = "Product details found";
-                MessagePanel.CssClass = "alert alert-success alert-dismissible";
-                MessagePanel.Visible = true;
-            }
-            catch (Exception ex)
-            {
-                MessageLabel.Text = ex.Message;
-                MessagePanel.CssClass = "alert alert-danger alert-dismissible";
-                MessagePanel.Visible = true;
-            }
-        }
-    }
-    
-    protected void ClearForm_Click(object sender, EventArgs e)
-    {
-        // Reset all the controls on the form
-        CurrentProducts.SelectedIndex = 0;
-        Supplier.SelectedIndex = 0;
-        Category.SelectedIndex = 0;
-        ProductID.Text = "";
-        ProductName.Text = "";
-        QtyPerUnit.Text = "";
-        UnitPrice.Text = "";
-        InStock.Text = "";
-        OnOrder.Text = "";
-        ReorderLevel.Text = "";
-        Discontinued.Checked = false;
-    }
-
-    protected void AddProduct_Click(object sender, EventArgs e)
-    {
-        // TODO: Do any validation
-        try
-        {
-            // Create a Product object and fill it with the data from the form
-            Product item = GetProductFromUser();
-
-            // Send the Product object to the BLL
-            NorthwindController controller = new NorthwindController();
-            int newItemId = controller.AddProduct(item); // my bad ;)
-
-            // Give the user some feedback
-            PopulateProductsDropDown(); // because we have a new product for the list
-            CurrentProducts.SelectedValue = newItemId.ToString();
-            ProductID.Text = newItemId.ToString();
-
-            MessageLabel.Text = "Product added";
-            MessagePanel.CssClass = "alert alert-success alert-dismissable";
-            MessagePanel.Visible = true;
-
-        }
-        catch (Exception ex)
-        {
-                MessageLabel.Text = ex.Message;
-                MessagePanel.CssClass = "alert alert-danger alert-dismissable";
-                MessagePanel.Visible = true;
-        }
-    }
-
     private Product GetProductFromUser()
     {
         Product item = new Product();
@@ -207,48 +248,24 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
         return item;
     }
 
-    protected void UpdateProduct_Click(object sender, EventArgs e)
+    private void ShowMessage(string message, string alertStyle)
     {
-        // TODO: Do any validation
-        int id;
-        if (int.TryParse(ProductID.Text, out id)) // If there is a Product ID
-        {
-            try
-            {
-                // Create a Product object and fill it with the data from the form
-                Product item = GetProductFromUser(); // Everything but the ProductId
-                item.ProductID = id; // The id from when they did the Lookup
-
-                // Send the Product object to the BLL
-                NorthwindController controller = new NorthwindController();
-                controller.UpdateProduct(item);
-
-                // Give the user some feedback
-                PopulateProductsDropDown();
-                CurrentProducts.SelectedValue = id.ToString();
-                MessageLabel.Text = item.ProductName + " was successfully updated";
-                MessagePanel.CssClass = "alert alert-success alert-dismissible";
-                MessagePanel.Visible = true;
-
-            }
-            catch (Exception ex)
-            {
-                MessageLabel.Text = "Error: " + ex.Message;
-                MessagePanel.CssClass = "alert alert-danger alert-dismissible";
-                MessagePanel.Visible = true;
-            }
-        }
-        else
-        {
-            MessageLabel.Text = "Please lookup a product before clicking the Update button.";
-            MessagePanel.CssClass = "alert alert-info alert-dismissible";
-            MessagePanel.Visible = true;
-
-        }
+        MessageLabel.Text = message;
+        MessagePanel.CssClass = string.Format("alert alert-{0} alert-dismissible", alertStyle);
+        MessagePanel.Visible = true;
     }
 
-    protected void DeleteProduct_Click(object sender, EventArgs e)
+    private void ShowFullExceptionMessage(Exception ex)
     {
-
+        string message = "ERROR: " + ex.Message;
+        // get the inner exception....
+        Exception inner = ex;
+        // this next statement drills down on the details of the exception
+        while (inner.InnerException != null)
+            inner = inner.InnerException;
+        if (inner != ex)
+            message += "<blockquote>" + inner.Message + "</blockquote>";
+        ShowMessage( message, "danger");
     }
+    #endregion
 }

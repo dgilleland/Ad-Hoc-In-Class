@@ -25,6 +25,7 @@
             </div>
         </div>
         <div class="col-sm-12">
+            <br />
             <asp:Panel ID="MessagePanel" runat="server" role="alert" Visible="false">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <asp:Label ID="MessageLabel" runat="server"></asp:Label>

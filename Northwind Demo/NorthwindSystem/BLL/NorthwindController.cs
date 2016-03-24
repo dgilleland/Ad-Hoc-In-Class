@@ -80,5 +80,15 @@ namespace NorthwindSystem.BLL
                 dbContext.SaveChanges();
             }
         }
+
+        public void DeleteProduct(int id)
+        {
+            using (var context = new NorthwindContext())
+            {
+                var existing = context.Products.Find(id);
+                context.Products.Remove(existing);
+                context.SaveChanges();
+            }
+        }
     }
 }
