@@ -58,6 +58,10 @@ namespace NorthwindSystem.BLL
         {
             using (NorthwindContext dbContext = new NorthwindContext())
             {
+                // FYI: If I had a Guid property that I needed to create a value for
+                //      when adding the item (hint, hint: think of your lab), I could do this:
+                // item.rowguid = Guid.NewGuid();
+
                 Product newItem = dbContext.Products.Add(item);
                 dbContext.SaveChanges();
                 return newItem.ProductID;
@@ -68,6 +72,11 @@ namespace NorthwindSystem.BLL
         {
             using (NorthwindContext dbContext = new NorthwindContext())
             {
+                // At the BLL level of processing the Update request,
+                // I am going to set the item's LastModified date before
+                // I do the update.
+                item.LastModified = DateTime.Now;
+
                 // The following approach will update the entire Product object
                 // in the database.
 
