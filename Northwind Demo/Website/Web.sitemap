@@ -8,8 +8,14 @@
         <siteMapNode url="~/Purchasing/AddEditSupplier.aspx" title="Suppliers" />
       </siteMapNode>
       <siteMapNode title="Staffing">
-        <siteMapNode url="~/Staffing/AddEditEdmployees.aspx" title="Employees" />
+        <siteMapNode url="~/Staffing/AddEditEmployees.aspx" title="Employees" />
         <siteMapNode url="~/Staffing/AddEditTerritories.aspx" title="Regional Coverage" />
+      </siteMapNode>
+      <siteMapNode title="Sales">
+        <siteMapNode url="~/Sales/AddEditCustomers.aspx" title="Customers" />
+        <siteMapNode url="~/Sales/AddEditShippers.aspx" title="Shippers" />
+        <siteMapNode url="~/Sales/AddEditOrders.aspx" title="Orders" />
+        <siteMapNode url="~/Sales/AddEditOrderDetails.aspx" title="Order Details" />
       </siteMapNode>
         <siteMapNode url="~/About" title="About" />
         <siteMapNode url="~/Contact" title="Contact" />
