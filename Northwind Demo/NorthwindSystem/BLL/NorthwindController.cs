@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 // Namespace usings for the Entity classes and the Data Access Layer
 using NorthwindEntities;
 using NorthwindSystem.DAL;
+using System.Data.SqlClient;
 
 namespace NorthwindSystem.BLL
 {
@@ -98,6 +99,33 @@ namespace NorthwindSystem.BLL
                 context.Products.Remove(existing);
                 context.SaveChanges();
             }
+        }
+
+        public List<Product> GetProductsByCategory(int searchId)
+        {
+            using (NorthwindContext context = new NorthwindContext())
+            {
+                return context // from the context of where I connect to the Db server...
+                         .Database // access the database directly to ...
+                           .SqlQuery<Product>("EXEC Products_GetByCategories @cat"
+                                              , new SqlParameter("cat", searchId))
+                             .ToList();
+            }
+        }
+
+        public List<Customer> FindCustomersSloppy(string p)
+        {
+            using(var context = new NorthwindContext())
+            {
+                string sql = "SELECT * FROM CUSTOMERS WHERE CompanyName LIKE '%" + p + "%'";
+                var query = context.Database.SqlQuery<Customer>(sql);
+                return query.ToList();
+            }
+        }
+
+        public List<Customer> FindCustomersProper(string p)
+        {
+            throw new NotImplementedException();
         }
     }
 }
