@@ -23,6 +23,7 @@
                 <asp:LinkButton ID="AddCategory" runat="server" CssClass="btn btn-default" OnClick="AddCategory_Click">Add Category</asp:LinkButton>
                 <asp:LinkButton ID="UpdateCategory" runat="server" CssClass="btn btn-default" OnClick="UpdateCategory_Click">Update Category</asp:LinkButton>
                 <asp:LinkButton ID="DeleteCategory" runat="server" CssClass="btn btn-default" OnClick="DeleteCategory_Click">Delete Category</asp:LinkButton>
+                <ajaxToolkit:ConfirmButtonExtender runat="server" ConfirmText="Are you sure you want to delete this category?" BehaviorID="DeleteCategory_ConfirmButtonExtender" TargetControlID="DeleteCategory" ID="DeleteCategory_ConfirmButtonExtender"></ajaxToolkit:ConfirmButtonExtender>
                 <asp:LinkButton ID="ClearForm" runat="server" CssClass="btn btn-default" OnClick="ClearForm_Click">Clear Form</asp:LinkButton>
             </div>
             <br />
