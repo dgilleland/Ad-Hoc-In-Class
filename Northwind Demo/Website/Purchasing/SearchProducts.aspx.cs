@@ -44,16 +44,24 @@ public partial class Purchasing_SearchProducts : System.Web.UI.Page
     protected void LookupByCategory_Click(object sender, EventArgs e)
     {
         // TODO: Validate their selection (NOT want .SelectedIndex == 0)
+        PopulateGridView();        
+    }
+    private void PopulateGridView()
+    {
         NorthwindController controller = new NorthwindController();
         int searchId = int.Parse(CategoryDropDown.SelectedValue);
         List<Product> data = controller.GetProductsByCategory(searchId);
 
         SearchResultsGridView.DataSource = data;
         SearchResultsGridView.DataBind();
-        
     }
     protected void LookupBySupplier_Click(object sender, EventArgs e)
     {
 
+    }
+    protected void SearchResultsGridView_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        SearchResultsGridView.PageIndex = e.NewPageIndex;
+        PopulateGridView();
     }
 }

@@ -26,8 +26,19 @@
     .row>.col-md-12
     <div class="row">
         <div class="col-md-12">
-            <asp:GridView ID="SearchResultsGridView" runat="server">
+            <asp:GridView ID="SearchResultsGridView" runat="server"
+                ItemType="NorthwindEntities.Product" AutoGenerateColumns="False" AllowPaging="True" PageSize="5" OnPageIndexChanging="SearchResultsGridView_PageIndexChanging"
+                CssClass="table table-hover table-condensed">
+                <Columns>
+                    <asp:BoundField DataField="ProductName" HeaderText="Product Name"></asp:BoundField>
+                    <asp:BoundField DataField="QuantityPerUnit" HeaderText="Qty/Unit" />
+                    <asp:BoundField DataField="UnitPrice" HeaderText="Price" DataFormatString="{0:c}" />
+                    <asp:BoundField DataField="UnitsInStock" HeaderText="In Stock" />
+                    <asp:BoundField DataField="UnitsOnOrder" HeaderText="On Order" />
+                    <asp:BoundField DataField="ReorderLevel" HeaderText="Reorder Level" />
+                </Columns>
                 <EmptyDataTemplate>No products for the selected search.</EmptyDataTemplate>
+                <PagerSettings Mode="NumericFirstLast" Position="TopAndBottom" PageButtonCount="2" />
             </asp:GridView>
         </div>
     </div>
