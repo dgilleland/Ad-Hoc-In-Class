@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 using NorthwindEntities;
 using NorthwindSystem.DAL;
 using System.Data.SqlClient;
+// Namespace needed for using Controllers with ObjectDataSource controls
+using System.ComponentModel;
 
 namespace NorthwindSystem.BLL
 {
     // This class is the public access into our system/application
     // that will be used by the website.
+    [DataObject] // This class can be used to get objects for DataBound controls
     public class NorthwindController
     {
         public List<Product> ListAllProducts()
@@ -47,11 +50,13 @@ namespace NorthwindSystem.BLL
             }
         }
 
+        [DataObjectMethod(DataObjectMethodType.Select)] // method is for SELECT
         public List<Category> ListAllCategories()
         {
             using (NorthwindContext context = new NorthwindContext())
             {
-                return context.Categories.ToList();
+                return context.Categories.OrderBy(item=>item.CategoryName).ToList();
+                //                       \[scary] Lambda stuff [next term]/
             }
         }
 
@@ -101,6 +106,7 @@ namespace NorthwindSystem.BLL
             }
         }
 
+        [DataObjectMethod(DataObjectMethodType.Select)] // to Read objects
         public List<Product> GetProductsByCategory(int searchId)
         {
             using (NorthwindContext context = new NorthwindContext())
