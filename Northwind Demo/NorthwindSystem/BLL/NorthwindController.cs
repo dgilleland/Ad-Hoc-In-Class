@@ -17,6 +17,18 @@ namespace NorthwindSystem.BLL
     [DataObject] // This class can be used to get objects for DataBound controls
     public class NorthwindController
     {
+        #region Countries
+        public List<CountryName> ListAllCountries()
+        {
+            using (var context = new NorthwindContext())
+            {
+                var result = context.Database.SqlQuery<CountryName>("Countries_List");
+                return result.ToList();
+            }
+        }
+        #endregion
+
+        #region Products CRUD
         public List<Product> ListAllProducts()
         {
             // This "using" statement is different than the "using" at the top of this file.
@@ -39,24 +51,6 @@ namespace NorthwindSystem.BLL
             using (NorthwindContext context = new NorthwindContext())
             {
                 return context.Products.Find(productId);
-            }
-        }
-
-        public List<Supplier> ListAllSuppliers()
-        {
-            using (NorthwindContext context = new NorthwindContext())
-            {
-                return context.Suppliers.ToList();
-            }
-        }
-
-        [DataObjectMethod(DataObjectMethodType.Select)] // method is for SELECT
-        public List<Category> ListAllCategories()
-        {
-            using (NorthwindContext context = new NorthwindContext())
-            {
-                return context.Categories.OrderBy(item=>item.CategoryName).ToList();
-                //                       \[scary] Lambda stuff [next term]/
             }
         }
 
@@ -105,6 +99,69 @@ namespace NorthwindSystem.BLL
                 context.SaveChanges();
             }
         }
+        #endregion
+
+        #region Suppliers CRUD
+        public List<Supplier> ListAllSuppliers()
+        {
+            using (NorthwindContext context = new NorthwindContext())
+            {
+                return context.Suppliers.ToList();
+            }
+        }
+
+        public Supplier LookupSupplier(int Supplierid)
+        {
+            using (var context = new NorthwindContext())
+            {
+                return context.Suppliers.Find(Supplierid);
+            }
+        }
+        public int AddSupplier(Supplier item)
+        {
+            throw new NotImplementedException();
+        }
+        public int UpdateSupplier(Supplier item)
+        {
+            throw new NotImplementedException();
+        }
+        public int DeleteSupplier(int SupplierId)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Categories CRUD
+        [DataObjectMethod(DataObjectMethodType.Select)] // method is for SELECT
+        public List<Category> ListAllCategories()
+        {
+            using (NorthwindContext context = new NorthwindContext())
+            {
+                return context.Categories.OrderBy(item=>item.CategoryName).ToList();
+                //                       \[scary] Lambda stuff [next term]/
+            }
+        }
+
+        public Category LookupCategory(int categoryid)
+        {
+            using (var context = new NorthwindContext())
+            {
+                return context.Categories.Find(categoryid);
+            }
+        }
+        public int AddCategory(Category item)
+        {
+            throw new NotImplementedException();
+        }
+        public int UpdateCategory(Category item)
+        {
+            throw new NotImplementedException();
+        }
+        public int DeleteCategory(int categoryId)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
 
         [DataObjectMethod(DataObjectMethodType.Select)] // to Read objects
         public List<Product> GetProductsByCategory(int searchId)
@@ -119,6 +176,7 @@ namespace NorthwindSystem.BLL
             }
         }
 
+        #region SQL Injection Demo
         public List<Customer> FindCustomersSloppy(string p)
         {
             using(var context = new NorthwindContext())
@@ -133,5 +191,6 @@ namespace NorthwindSystem.BLL
         {
             throw new NotImplementedException();
         }
+        #endregion
     }
 }

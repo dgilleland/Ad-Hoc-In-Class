@@ -49,7 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Category.cs" />
-    <Compile Include="Country.cs" />
+    <Compile Include="CountryName.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="Product.cs" />
@@ -64,6 +64,7 @@
     <None Include="packages.config" />
     <None Include="Territories Class Diagram.cd" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

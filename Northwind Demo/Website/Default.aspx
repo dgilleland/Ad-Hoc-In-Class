@@ -15,6 +15,7 @@
         </div>
         <div class="col-md-4">
             <h2>Notes</h2>
+            
         </div>
     </div>
     <div class="row">
@@ -38,7 +39,7 @@
     <div class="row">
         <div class="col-md-12">
             <h3>Complete Northwind Traders ERD</h3>
-            <img src="Images/Northwind%20Traders%20-%20ERD%20(nulls).png" class="img img-responsive" />
+            <img src="Images/Northwind%20Traders%20-%20ERD.png" class="img img-responsive" />
         </div>
     </div>
 </asp:Content>

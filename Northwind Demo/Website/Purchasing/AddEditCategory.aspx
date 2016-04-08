@@ -11,15 +11,15 @@
                 <div class="form-group">
                     <asp:Label ID="Label1" runat="server" CssClass="control-label" Text="Categories" AssociatedControlID="CurrentCategories"></asp:Label>
                     <asp:DropDownList ID="CurrentCategories" runat="server" CssClass="form-control"></asp:DropDownList>
-                    <asp:LinkButton ID="LookupCategory" runat="server" CssClass="btn btn-primary" CausesValidation="false">Lookup Category</asp:LinkButton>
+                    <asp:LinkButton ID="LookupCategory" runat="server" CssClass="btn btn-primary" CausesValidation="false" OnClick="LookupCategory_Click">Lookup Category</asp:LinkButton>
                 </div>
             </div>
             <br />
             <div>
-                <asp:LinkButton ID="AddCategory" runat="server" CssClass="btn btn-default">Add Category</asp:LinkButton>
-                <asp:LinkButton ID="UpdateCategory" runat="server" CssClass="btn btn-default">Update Category</asp:LinkButton>
-                <asp:LinkButton ID="DeleteCategory" runat="server" CssClass="btn btn-default">Delete Category</asp:LinkButton>
-                <asp:LinkButton ID="ClearForm" runat="server" CssClass="btn btn-default">Clear Form</asp:LinkButton>
+                <asp:LinkButton ID="AddCategory" runat="server" CssClass="btn btn-default" OnClick="AddCategory_Click">Add Category</asp:LinkButton>
+                <asp:LinkButton ID="UpdateCategory" runat="server" CssClass="btn btn-default" OnClick="UpdateCategory_Click">Update Category</asp:LinkButton>
+                <asp:LinkButton ID="DeleteCategory" runat="server" CssClass="btn btn-default" OnClick="DeleteCategory_Click">Delete Category</asp:LinkButton>
+                <asp:LinkButton ID="ClearForm" runat="server" CssClass="btn btn-default" OnClick="ClearForm_Click">Clear Form</asp:LinkButton>
             </div>
             <br />
             <div>
