@@ -32,7 +32,7 @@ public partial class Purchasing_AddEditCategory : System.Web.UI.Page
     private void PopulateCategoryDropdown()
     {
         // Populate Category drop-down
-        NorthwindController controller = new NorthwindController();
+        InventoryPurchasingController controller = new InventoryPurchasingController();
         List<Category> categories = controller.ListAllCategories();
         CurrentCategories.DataSource = categories;
         CurrentCategories.DataTextField = "CategoryName";
@@ -53,7 +53,7 @@ public partial class Purchasing_AddEditCategory : System.Web.UI.Page
             try
             {
                 //connect to the BLL
-                NorthwindController systemmgr = new NorthwindController();
+                InventoryPurchasingController systemmgr = new InventoryPurchasingController();
                 //set up the data catching variable
                 Category aCategory; //currently null
                 // issue query request (lookup)
@@ -111,7 +111,7 @@ public partial class Purchasing_AddEditCategory : System.Web.UI.Page
             item.Picture = ImageUploadHelpers.GetUploadedPicture(CategoryImageUpload);
             item.PictureMimeType = ImageUploadHelpers.GetMimeType(CategoryImageUpload);
 
-            NorthwindController controller = new NorthwindController();
+            InventoryPurchasingController controller = new InventoryPurchasingController();
             int addedCategoryID = controller.AddCategory(item);
             // Update the form and give feedback to the user
             PopulateCategoryDropdown();
@@ -153,7 +153,7 @@ public partial class Purchasing_AddEditCategory : System.Web.UI.Page
                     else
                     {
                         // 1) Get the picture to be used in the update
-                        NorthwindController controller = new NorthwindController();
+                        InventoryPurchasingController controller = new InventoryPurchasingController();
                         if (DeletePicture.Checked)
                         {
                             uploadedPicture = null;
@@ -218,7 +218,7 @@ public partial class Purchasing_AddEditCategory : System.Web.UI.Page
         {
             try
             {
-                NorthwindController controller = new NorthwindController();
+                InventoryPurchasingController controller = new InventoryPurchasingController();
                 int rowsAffected = controller.DeleteCategory(theCategoryId);
 
                 if (rowsAffected > 0)

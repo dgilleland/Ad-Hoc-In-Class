@@ -20,7 +20,7 @@ public partial class Purchasing_SearchProducts : System.Web.UI.Page
 
     private void PopulateSupplierDropDown()
     {
-        NorthwindController controller = new NorthwindController();
+        InventoryPurchasingController controller = new InventoryPurchasingController();
         List<Supplier> data = controller.ListAllSuppliers();
         SupplierDropDown.DataSource = data;
         SupplierDropDown.DataTextField = "CompanyName";
@@ -32,7 +32,7 @@ public partial class Purchasing_SearchProducts : System.Web.UI.Page
 
     private void PopulateCategoryDropDown()
     {
-        NorthwindController controller = new NorthwindController();
+        InventoryPurchasingController controller = new InventoryPurchasingController();
         List<Category> data = controller.ListAllCategories();
         CategoryDropDown.DataSource = data;
         CategoryDropDown.DataTextField = "CategoryName";
@@ -48,7 +48,7 @@ public partial class Purchasing_SearchProducts : System.Web.UI.Page
     }
     private void PopulateGridView()
     {
-        NorthwindController controller = new NorthwindController();
+        InventoryPurchasingController controller = new InventoryPurchasingController();
         int searchId = int.Parse(CategoryDropDown.SelectedValue);
         List<Product> data = controller.GetProductsByCategory(searchId);
 

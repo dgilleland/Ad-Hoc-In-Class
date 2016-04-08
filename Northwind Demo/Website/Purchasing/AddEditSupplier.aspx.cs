@@ -36,7 +36,7 @@ public partial class Purchasing_AddEditSupplier : System.Web.UI.Page
             if (int.TryParse(SupplierDropDownList.SelectedValue, out supplierId) && supplierId >= 0)
             {
                 Supplier item;
-                NorthwindController Controller = new NorthwindController();
+                InventoryPurchasingController Controller = new InventoryPurchasingController();
                 item = Controller.LookupSupplier(supplierId);
 
                 CurrentSupplier.Text = item.SupplierID.ToString();
@@ -94,7 +94,7 @@ public partial class Purchasing_AddEditSupplier : System.Web.UI.Page
                 item.Phone = Phone.Text;
                 item.Fax = Fax.Text;
                 //item = HomePage;
-                NorthwindController Controller = new NorthwindController();
+                InventoryPurchasingController Controller = new InventoryPurchasingController();
                 int NewSupplierId = Controller.AddSupplier(item);
 
                 // 2) Update the form and give feedback to the user
@@ -118,7 +118,7 @@ public partial class Purchasing_AddEditSupplier : System.Web.UI.Page
     #region Private Methods"
     private void BindSupplierDropDown()
     {
-        NorthwindController controller = new NorthwindController();
+        InventoryPurchasingController controller = new InventoryPurchasingController();
         SupplierDropDownList.DataSource = controller.ListAllSuppliers();
         SupplierDropDownList.DataTextField = "CompanyName";
         SupplierDropDownList.DataValueField = "SupplierID";
@@ -128,7 +128,7 @@ public partial class Purchasing_AddEditSupplier : System.Web.UI.Page
 
     private void BindCountryDropDown()
     {
-        NorthwindController controller = new NorthwindController();
+        InventoryPurchasingController controller = new InventoryPurchasingController();
         CountryDropDown.DataSource = controller.ListAllCountries();
         CountryDropDown.DataTextField = "Country";
         CountryDropDown.DataValueField = "Country";

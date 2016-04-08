@@ -44,7 +44,7 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
             try
             {
                 searchId = int.Parse(CurrentProducts.SelectedValue);
-                NorthwindController controller = new NorthwindController();
+                InventoryPurchasingController controller = new InventoryPurchasingController();
                 Product foundProduct = controller.GetProduct(searchId);
 
                 // Unpacking the found product into the form
@@ -96,7 +96,7 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
             Product item = GetProductFromUser();
 
             // Send the Product object to the BLL
-            NorthwindController controller = new NorthwindController();
+            InventoryPurchasingController controller = new InventoryPurchasingController();
             int newItemId = controller.AddProduct(item); // my bad ;)
 
             // Give the user some feedback
@@ -125,7 +125,7 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
                 item.ProductID = id; // The id from when they did the Lookup
 
                 // Send the Product object to the BLL
-                NorthwindController controller = new NorthwindController();
+                InventoryPurchasingController controller = new InventoryPurchasingController();
                 controller.UpdateProduct(item);
 
                 // Give the user some feedback
@@ -150,7 +150,7 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
             try
             {
                 // Send the Product object to the BLL
-                NorthwindController controller = new NorthwindController();
+                InventoryPurchasingController controller = new InventoryPurchasingController();
                 controller.DeleteProduct(id);
 
                 // Give the user some feedback
@@ -172,7 +172,7 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
     #region Private methods
     private void PopulateCategoryDropDown()
     {
-        NorthwindController controller = new NorthwindController();
+        InventoryPurchasingController controller = new InventoryPurchasingController();
         List<Category> categories = controller.ListAllCategories();
         Category.DataSource = categories;
         Category.DataTextField = "CategoryName";
@@ -185,7 +185,7 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
 
     private void PopulateSupplierDropDown()
     {
-        NorthwindController controller = new NorthwindController();
+        InventoryPurchasingController controller = new InventoryPurchasingController();
         List<Supplier> suppliers = controller.ListAllSuppliers();
         Supplier.DataSource = suppliers;
         Supplier.DataTextField = "CompanyName";
@@ -200,7 +200,7 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
     {
         // We can populate some controls such as DropDownLists with data
         // Populate CurrentProducts with all the products in the database
-        NorthwindController controller = new NorthwindController();
+        InventoryPurchasingController controller = new InventoryPurchasingController();
         // controller is a NorthwindController object
         List<Product> products = controller.ListAllProducts();
         // products is a List<Product> object

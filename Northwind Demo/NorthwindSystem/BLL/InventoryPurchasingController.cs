@@ -15,7 +15,7 @@ namespace NorthwindSystem.BLL
     // This class is the public access into our system/application
     // that will be used by the website.
     [DataObject] // This class can be used to get objects for DataBound controls
-    public class NorthwindController
+    public class InventoryPurchasingController
     {
         #region Countries
         public List<CountryName> ListAllCountries()

@@ -14,14 +14,14 @@ public partial class HackMePlease : System.Web.UI.Page
     }
     protected void HackClick_Click(object sender, EventArgs e)
     {
-        var controller = new NorthwindSystem.BLL.NorthwindController();
+        var controller = new NorthwindSystem.BLL.InventoryPurchasingController();
         List<Customer> result = controller.FindCustomersSloppy(CustName.Text);
         SearchResultGV.DataSource = result;
         SearchResultGV.DataBind();
     }
     protected void SafeClick_Click(object sender, EventArgs e)
     {
-        var controller = new NorthwindSystem.BLL.NorthwindController();
+        var controller = new NorthwindSystem.BLL.InventoryPurchasingController();
         List<Customer> result = controller.FindCustomersProper(CustName.Text);
         SearchResultGV.DataSource = result;
         SearchResultGV.DataBind();
