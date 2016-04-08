@@ -99,6 +99,19 @@ namespace NorthwindSystem.BLL
                 context.SaveChanges();
             }
         }
+
+        [DataObjectMethod(DataObjectMethodType.Select)] // to Read objects
+        public List<Product> GetProductsByCategory(int searchId)
+        {
+            using (NorthwindContext context = new NorthwindContext())
+            {
+                return context // from the context of where I connect to the Db server...
+                         .Database // access the database directly to ...
+                           .SqlQuery<Product>("EXEC Products_GetByCategories @cat"
+                                              , new SqlParameter("cat", searchId))
+                             .ToList();
+            }
+        }
         #endregion
 
         #region Suppliers CRUD
@@ -117,17 +130,37 @@ namespace NorthwindSystem.BLL
                 return context.Suppliers.Find(Supplierid);
             }
         }
+
         public int AddSupplier(Supplier item)
         {
-            throw new NotImplementedException();
+            using (NorthwindContext dbContext = new NorthwindContext())
+            {
+                Supplier newItem = dbContext.Suppliers.Add(item);
+                dbContext.SaveChanges();
+                return newItem.SupplierID;
+            }
         }
-        public int UpdateSupplier(Supplier item)
+
+        public void UpdateSupplier(Supplier item)
         {
-            throw new NotImplementedException();
+            using (NorthwindContext dbContext = new NorthwindContext())
+            {
+                var existing = dbContext.Entry(item);
+                // Tell the dbContext that this object's data is modified
+                existing.State = System.Data.Entity.EntityState.Modified;
+                // Save the changes
+                dbContext.SaveChanges();
+            }
         }
-        public int DeleteSupplier(int SupplierId)
+
+        public void DeleteSupplier(int SupplierId)
         {
-            throw new NotImplementedException();
+            using (var context = new NorthwindContext())
+            {
+                var existing = context.Suppliers.Find(SupplierId);
+                context.Suppliers.Remove(existing);
+                context.SaveChanges();
+            }
         }
         #endregion
 
@@ -149,32 +182,39 @@ namespace NorthwindSystem.BLL
                 return context.Categories.Find(categoryid);
             }
         }
+
         public int AddCategory(Category item)
         {
-            throw new NotImplementedException();
-        }
-        public int UpdateCategory(Category item)
-        {
-            throw new NotImplementedException();
-        }
-        public int DeleteCategory(int categoryId)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
-        [DataObjectMethod(DataObjectMethodType.Select)] // to Read objects
-        public List<Product> GetProductsByCategory(int searchId)
-        {
-            using (NorthwindContext context = new NorthwindContext())
+            using (NorthwindContext dbContext = new NorthwindContext())
             {
-                return context // from the context of where I connect to the Db server...
-                         .Database // access the database directly to ...
-                           .SqlQuery<Product>("EXEC Products_GetByCategories @cat"
-                                              , new SqlParameter("cat", searchId))
-                             .ToList();
+                Category newItem = dbContext.Categories.Add(item);
+                dbContext.SaveChanges();
+                return newItem.CategoryID;
             }
         }
+
+        public void UpdateCategory(Category item)
+        {
+            using (NorthwindContext dbContext = new NorthwindContext())
+            {
+                var existing = dbContext.Entry(item);
+                // Tell the dbContext that this object's data is modified
+                existing.State = System.Data.Entity.EntityState.Modified;
+                // Save the changes
+                dbContext.SaveChanges();
+            }
+        }
+
+        public void DeleteCategory(int categoryId)
+        {
+            using (var context = new NorthwindContext())
+            {
+                var existing = context.Categories.Find(categoryId);
+                context.Categories.Remove(existing);
+                context.SaveChanges();
+            }
+        }
+        #endregion
 
         #region SQL Injection Demo
         public List<Customer> FindCustomersSloppy(string p)

@@ -81,8 +81,8 @@
                 <asp:TextBox ID="Fax" runat="server"></asp:TextBox>
 
 
-                <asp:Label ID="Label13" runat="server" Text="Home Page Text" AssociatedControlID="HomePageText"></asp:Label>
-                <asp:TextBox ID="HomePageText" runat="server" Width="250px" CssClass="form-control"
+                <asp:Label ID="Label13" runat="server" Text="Home Page Text" AssociatedControlID="HomePageTitle"></asp:Label>
+                <asp:TextBox ID="HomePageTitle" runat="server" Width="250px" CssClass="form-control"
                     ToolTip="The Display Text is the title of the home page as it appears in the browser's tab."></asp:TextBox>
 
                 <asp:Label ID="Label14" runat="server" Text="Home Page" AssociatedControlID="WebAddress"></asp:Label>

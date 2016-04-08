@@ -50,7 +50,7 @@ public partial class Purchasing_AddEditSupplier : System.Web.UI.Page
                 CountryDropDown.SelectedValue = item.Country;
                 Phone.Text = item.Phone;
                 Fax.Text = item.Fax;
-                HomePageText.Text = item.HomePageTitle;
+                HomePageTitle.Text = item.HomePageTitle;
                 WebAddress.Text = item.HomePageUrl;
             }
             else
@@ -93,7 +93,10 @@ public partial class Purchasing_AddEditSupplier : System.Web.UI.Page
                 item.Country = country;
                 item.Phone = Phone.Text;
                 item.Fax = Fax.Text;
-                //item = HomePage;
+                item.HomePageTitle = HomePageTitle.Text;
+                item.HomePageUrl = WebAddress.Text;
+
+
                 InventoryPurchasingController Controller = new InventoryPurchasingController();
                 int NewSupplierId = Controller.AddSupplier(item);
 
@@ -112,6 +115,120 @@ public partial class Purchasing_AddEditSupplier : System.Web.UI.Page
             MessagePanel.CssClass = "alert alert-danger alert-dismissible";
             MessagePanel.Visible = true;
         }
+    }
+
+    protected void UpdateSupplier_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            int supplierId;
+            if (int.TryParse(CurrentSupplier.Text, out supplierId))
+            {
+                if (IsValid)
+                {
+                    // 1) Add the product as a new item
+                    // Get the Country name
+                    string country = null;
+                    if (CountryDropDown.SelectedIndex > 0)
+                    {
+                        country = CountryDropDown.SelectedValue;
+                    }
+
+                    Supplier item = new Supplier();
+                    item.SupplierID = supplierId;
+                    item.CompanyName = CompanyName.Text;
+                    item.ContactName = ContactName.Text;
+                    item.ContactTitle = ContactTitle.Text;
+                    item.Address = Address.Text;
+                    item.City = City.Text;
+                    item.Region = Region.Text;
+                    item.PostalCode = PostalCode.Text;
+                    item.Country = country;
+                    item.Phone = Phone.Text;
+                    item.Fax = Fax.Text;
+                    item.HomePageTitle = HomePageTitle.Text;
+                    item.HomePageUrl = WebAddress.Text;
+
+
+                    InventoryPurchasingController Controller = new InventoryPurchasingController();
+                    Controller.UpdateSupplier(item);
+
+                    // 2) Update the form and give feedback to the user
+                    BindSupplierDropDown();
+                    ClearForm_Click(sender, e);
+                    MessageLabel.Text = "Supplier updated";
+                    MessagePanel.CssClass = "alert alert-success alert-dismissible";
+                    MessagePanel.Visible = true;
+                }
+            }
+            else
+            {
+                MessageLabel.Text = "Please lookup a supplier before attempting to update";
+                MessagePanel.CssClass = "alert alert-warning alert-dismissible";
+                MessagePanel.Visible = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageLabel.Text = ex.Message;
+            MessagePanel.CssClass = "alert alert-danger alert-dismissible";
+            MessagePanel.Visible = true;
+        }
+    }
+
+    protected void DeleteSupplier_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            int supplierId;
+            if (int.TryParse(CurrentSupplier.Text, out supplierId))
+            {
+                if (IsValid)
+                {
+
+                    InventoryPurchasingController Controller = new InventoryPurchasingController();
+                    Controller.DeleteSupplier(supplierId);
+
+                    // 2) Update the form and give feedback to the user
+                    BindSupplierDropDown();
+                    SupplierDropDownList.SelectedIndex = -1;
+                    MessageLabel.Text = "Supplier removed";
+                    MessagePanel.CssClass = "alert alert-success alert-dismissible";
+                    MessagePanel.Visible = true;
+                }
+            }
+            else
+            {
+                MessageLabel.Text = "Please lookup a supplier before attempting to update";
+                MessagePanel.CssClass = "alert alert-warning alert-dismissible";
+                MessagePanel.Visible = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageLabel.Text = ex.Message;
+            MessagePanel.CssClass = "alert alert-danger alert-dismissible";
+            MessagePanel.Visible = true;
+        }
+    }
+
+    protected void ClearForm_Click(object sender, EventArgs e)
+    {
+        SupplierDropDownList.SelectedIndex = -1;
+        CountryDropDown.SelectedIndex = -1;
+        CurrentSupplier.Text = "";
+        CompanyName.Text = "";
+        ContactName.Text = "";
+        ContactTitle.Text = "";
+        Address.Text = "";
+        City.Text = "";
+        Region.Text = "";
+        PostalCode.Text = "";
+        Phone.Text = "";
+        Fax.Text = "";
+        HomePageTitle.Text = "";
+        WebAddress.Text = "";
+
     }
     #endregion
 
@@ -147,16 +264,4 @@ public partial class Purchasing_AddEditSupplier : System.Web.UI.Page
                 MessageLabel.Text = "The supplier selected in the drop-down is not the same as the supplier details in the form; it is not clear which one you want to modify.<br />Please Select the supplier you want to modify before clicking Update or Delete.";
     }
     #endregion
-    protected void UpdateSupplier_Click(object sender, EventArgs e)
-    {
-
-    }
-    protected void DeleteSupplier_Click(object sender, EventArgs e)
-    {
-
-    }
-    protected void ClearForm_Click(object sender, EventArgs e)
-    {
-
-    }
 }

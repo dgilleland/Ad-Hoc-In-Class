@@ -250,6 +250,11 @@ public partial class Purchasing_AddEditCategory : System.Web.UI.Page
 
     protected void ClearForm_Click(object sender, EventArgs e)
     {
-
+        CategoryID.Text = "";
+        CategoryName.Text = "";
+        Description.Text = "";
+        DeletePicture.Checked = false;
+        Picture.ImageUrl = "~/Images/NoImage_172x120.gif";
+        CurrentCategories.SelectedIndex = 0;
     }
 }

@@ -17,7 +17,8 @@
         <siteMapNode url="~/Sales/AddEditOrders.aspx" title="Orders" />
         <siteMapNode url="~/Sales/AddEditOrderDetails.aspx" title="Order Details" />
       </siteMapNode>
-        <siteMapNode url="~/About" title="About" />
+      <siteMapNode url="~/HackMePlease" title="SQL Injection" />
+      <siteMapNode url="~/About" title="About" />
         <siteMapNode url="~/Contact" title="Contact" />
     </siteMapNode>
 </siteMap>
