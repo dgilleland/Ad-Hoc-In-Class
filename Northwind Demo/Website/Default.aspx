@@ -34,6 +34,7 @@
         </div>
         <div class="col-md-4">
             <h2>Notes</h2>
+            <p>Create CRUD maintenance forms for the Shippers and Orders tables. The forms are already created for you, but you will need to create the Entity classes and add appropriate code to the BLL class(es). You should ensure that at least one of the drop-down lists on the Orders form is populated via an ObjectDataSource control. All other page functionality must be done as code-behind.</p>
         </div>
     </div>
     <div class="row">

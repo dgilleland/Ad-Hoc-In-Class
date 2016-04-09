@@ -11,4 +11,29 @@ public partial class Sales_AddEditShippers : System.Web.UI.Page
     {
 
     }
+
+    protected void FetchShipper_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void AddShipper_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void UpdateShipper_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void DeleteShipper_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void ClearForm_Click(object sender, EventArgs e)
+    {
+
+    }
 }

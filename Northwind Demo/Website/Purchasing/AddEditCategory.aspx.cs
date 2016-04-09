@@ -177,25 +177,19 @@ public partial class Purchasing_AddEditCategory : System.Web.UI.Page
                         item.PictureMimeType = mimeType;
 
                         // 3) Update the database
-                        int rowsAffected = controller.UpdateCategory(item);
+                        controller.UpdateCategory(item);
 
-                        if (rowsAffected > 0)
+                        
+                        PopulateCategoryDropdown();
+                        CurrentCategories.SelectedValue = item.CategoryID.ToString();
+                        if (item.Picture != null)
                         {
-                            PopulateCategoryDropdown();
-                            CurrentCategories.SelectedValue = item.CategoryID.ToString();
-                            if (item.Picture != null)
-                            {
-                                string base64String = Convert.ToBase64String(item.Picture);
-                                Picture.ImageUrl = string.Format("data:{0};base64,{1}", item.PictureMimeType, base64String);
-                            }
-                            else
-                                Picture.ImageUrl = "~/Images/NoImage_172x120.gif";
-                            MessageLabel.Text = "Category was updated.";
+                            string base64String = Convert.ToBase64String(item.Picture);
+                            Picture.ImageUrl = string.Format("data:{0};base64,{1}", item.PictureMimeType, base64String);
                         }
                         else
-                        {
-                            MessageLabel.Text = "Update failed. Zero rows affected.";
-                        }
+                            Picture.ImageUrl = "~/Images/NoImage_172x120.gif";
+                            MessageLabel.Text = "Category was updated.";
                     }
                 }
                 catch (Exception ex)
@@ -219,21 +213,14 @@ public partial class Purchasing_AddEditCategory : System.Web.UI.Page
             try
             {
                 InventoryPurchasingController controller = new InventoryPurchasingController();
-                int rowsAffected = controller.DeleteCategory(theCategoryId);
+                controller.DeleteCategory(theCategoryId);
 
-                if (rowsAffected > 0)
-                {
-                    MessageLabel.Text = "Category " + CategoryName.Text + " deleted";
-                    PopulateCategoryDropdown();
-                    CategoryID.Text = string.Empty;
-                    CategoryName.Text = string.Empty;
-                    Description.Text = string.Empty;
-                    Picture.ImageUrl = "~/Images/NoImage_172x120.gif";
-                }
-                else
-                {
-                    MessageLabel.Text = "Delete failed. Zero rows affected.";
-                }
+                MessageLabel.Text = "Category " + CategoryName.Text + " deleted";
+                PopulateCategoryDropdown();
+                CategoryID.Text = string.Empty;
+                CategoryName.Text = string.Empty;
+                Description.Text = string.Empty;
+                Picture.ImageUrl = "~/Images/NoImage_172x120.gif";
             }
             catch (Exception ex)
             {

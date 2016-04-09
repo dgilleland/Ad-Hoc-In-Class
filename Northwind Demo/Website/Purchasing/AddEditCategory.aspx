@@ -5,7 +5,7 @@
         <h1 class="page-header">Add/Edit Categories</h1>
     </div>
     <div class="row">
-        <div class="pull-right col-sm-6">
+        <div class="pull-right col-md-6">
             <fieldset><legend>Form Actions</legend></fieldset>
             <div class="form-inline">
                 <div class="form-group">

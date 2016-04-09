@@ -45,7 +45,7 @@
                 <asp:Label ID="Label2" runat="server" Text="Supplier" AssociatedControlID="Supplier"></asp:Label>
                 <asp:DropDownList ID="Supplier" runat="server"></asp:DropDownList>
 
-                <asp:Label ID="Label5" runat="server" Text="Catgeory" AssociatedControlID="Category"></asp:Label>
+                <asp:Label ID="Label5" runat="server" Text="Category" AssociatedControlID="Category"></asp:Label>
                 <asp:DropDownList ID="Category" runat="server"></asp:DropDownList>
 
                 <asp:Label ID="Label6" runat="server" Text="Qty per Unit" AssociatedControlID="QtyPerUnit"></asp:Label>
