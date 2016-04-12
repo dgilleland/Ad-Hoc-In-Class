@@ -20,6 +20,7 @@ namespace NorthwindSystem.DAL
         // Name of connection string in web.config passed to the base class
         public NorthwindContext() : base("NW")
         {
+            Database.SetInitializer<NorthwindContext>(null);
         }
 
         // Properties that map our entities to database tables
@@ -28,5 +29,7 @@ namespace NorthwindSystem.DAL
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<EmployeeTerritory> EmployeeTerritories { get; set; }
     }
 }

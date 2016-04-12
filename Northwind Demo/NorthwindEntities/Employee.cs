@@ -26,7 +26,6 @@ using System.Threading.Tasks;
 
 namespace NorthwindEntities
 {
-
     [Table("Employees")]
     public class Employee
     {
