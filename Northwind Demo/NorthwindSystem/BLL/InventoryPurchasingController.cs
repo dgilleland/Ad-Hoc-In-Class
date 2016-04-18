@@ -61,6 +61,7 @@ namespace NorthwindSystem.BLL
                 // FYI: If I had a Guid property that I needed to create a value for
                 //      when adding the item (hint, hint: think of your lab), I could do this:
                 // item.rowguid = Guid.NewGuid();
+                item.LastModified = DateTime.Now;
 
                 Product newItem = dbContext.Products.Add(item);
                 dbContext.SaveChanges();

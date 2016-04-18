@@ -108,7 +108,7 @@ public partial class Purchasing_AddEditProduct : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            ShowMessage(ex.Message, "danger");
+            ShowFullExceptionMessage(ex);
         }
     }
 

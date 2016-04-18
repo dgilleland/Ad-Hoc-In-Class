@@ -2,16 +2,16 @@
 <siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
     <siteMapNode title="Root">
         <siteMapNode url="~/Default.aspx" title="Home" />
-      <siteMapNode title="Purchasing">
+      <siteMapNode title="Purchasing" url="~/Purchasing">
         <siteMapNode url="~/Purchasing/AddEditProduct.aspx" title="Products" />
         <siteMapNode url="~/Purchasing/AddEditCategory.aspx" title="Categories" />
         <siteMapNode url="~/Purchasing/AddEditSupplier.aspx" title="Suppliers" />
       </siteMapNode>
-      <siteMapNode title="Staffing">
+      <siteMapNode title="Staffing" url="~/Staffing">
         <siteMapNode url="~/Staffing/AddEditEmployees.aspx" title="Employees" />
         <siteMapNode url="~/Staffing/AddEditTerritories.aspx" title="Regional Coverage" />
       </siteMapNode>
-      <siteMapNode title="Sales">
+      <siteMapNode title="Sales" url="~/Sales">
         <siteMapNode url="~/Sales/AddEditCustomers.aspx" title="Customers" />
         <siteMapNode url="~/Sales/AddEditShippers.aspx" title="Shippers" />
         <siteMapNode url="~/Sales/AddEditOrders.aspx" title="Orders" />

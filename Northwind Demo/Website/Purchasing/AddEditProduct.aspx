@@ -30,6 +30,12 @@
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <asp:Label ID="MessageLabel" runat="server"></asp:Label>
             </asp:Panel>
+
+            <asp:ValidationSummary ID="ValidationSummary1" runat="server" CssClass="alert alert-info"
+                 HeaderText="Please note the following problems with your form. Correct these before adding or updating a Product." />
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server"
+                 ControlToValidate="ProductName" ErrorMessage="Product Name is required"
+                 Display="None"/>
         </div>
         <div class="col-md-offset-2 col-md-8">
             <br />
