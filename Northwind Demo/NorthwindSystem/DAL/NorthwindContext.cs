@@ -31,5 +31,7 @@ namespace NorthwindSystem.DAL
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeTerritory> EmployeeTerritories { get; set; }
+
+        public DbSet<Territory> Territories { get; set; }
     }
 }
